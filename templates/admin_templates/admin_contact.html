@@ -1,0 +1,53 @@
+{% extends 'admin_templates/admin_header_footer.html'%}
+{% load static %}
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-sm-flex align-items-center mb-4">
+            <h4 class="card-title mb-sm-0">User Enquiry</h4>
+          </div>
+          <div class="table-responsive border rounded p-1">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="font-weight-bold">ID</th>
+                  <th class="font-weight-bold">User Name</th>
+                  <th class="font-weight-bold">Email Address</th>
+                  <th class="font-weight-bold">Subject</th>
+                  <th class="font-weight-bold">Message</th>
+                  <th class="font-weight-bold">Delete</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in key %}
+                <tr style="border: solid 1px;">
+                    <td style="border: solid 1px;">{{i.id}}</td>
+                    <td style="border: solid 1px;">{{i.name}}</td>
+                    <td style="border: solid 1px;">{{i.email}}</td>
+                    <td style="border: solid 1px;">{{i.subject}}</td>
+                    <td style="border: solid 1px;">{{i.message}}</td>
+                    <td style="border: solid 1px;"><a href="{% url 'delete_enquiry' i.id %}">
+                      <i class="icon-trash menu-icon" style="color: red;"></i>
+                    </a></td>
+                </tr>
+                {% endfor %}
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>
+
+{% endblock %}

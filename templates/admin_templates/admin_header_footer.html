@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Website Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{% static 'admin_static/vendors/simple-line-icons/css/simple-line-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_static/vendors/flag-icon-css/css/flag-icons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_static/vendors/css/vendor.bundle.base.css' %}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="{% static 'admin_static/vendors/font-awesome/css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin_static/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_static/vendors/jvectormap/jquery-jvectormap.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_static/vendors/daterangepicker/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_static/vendors/chartist/chartist.min.css' %}">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static 'admin_static/css/vertical-light-layout/style.css' %}">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="{% static 'admin_static/images/favicon.png' %}" />
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:partials/_navbar.html -->
+      <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="background-color: black;">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+          <a class="navbar-brand brand-logo" href="index.html">
+            <img src="{% static 'admin_static/images/logo.svg' %}" alt="logo" class="logo-dark" />
+            <img src="{% static 'admin_static/images/logo-light.svg' %}" alt="logo-light" class="logo-light">
+          </a>
+          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="icon-menu"></span>
+          </button>
+        </div>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item navbar-brand-mini-wrapper">
+              <a class="nav-link navbar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
+            </li>
+            <li class="nav-item nav-profile">
+              <a href="#" class="nav-link">
+                <div class="text-wrapper">
+                  <p class="profile-name" style="margin-top: 5px;margin-left: 5px;">{{user.username}}</p>
+                  <!-- <p class="profile-name">{{user.email}}</p>
+                  <p class="profile-name">{{user.password}}</p> -->
+                </div>
+              </a>
+            </li>
+            <li class="nav-item nav-category">
+              <a href="{% url 'admin_home' %}"><span class="nav-link" style="text-decoration: none;">Dashboard</span></a>
+              
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'admin_enquiry'%}">
+                <span class="menu-title">User Enquiry</span>
+                <i class="icon-screen-desktop menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Blogs</span>
+                <i class="icon-layers menu-icon"></i>
+              </a>
+              <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'admin_blog' %}">Add Blogs</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'blog_list' %}">Blog List</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'sub_blog_create' %}">Sub Image Add</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'sub_img_list' %}">Sub Image List</a></li>
+                  <!-- <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li> -->
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+                <span class="menu-title">Icons</span>
+                <i class="icon-globe menu-icon"></i>    
+              </a>      
+              <div class="collapse" id="icons">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/icons/font-awesome.html">Font Awesome</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#forms" aria-expanded="false" aria-controls="forms">
+                <span class="menu-title">Forms</span>
+                <i class="icon-book-open menu-icon"></i>
+              </a>
+              <div class="collapse" id="forms">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/forms/basic_elements.html">Form Elements</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+                <span class="menu-title">Charts</span>
+                <i class="icon-chart menu-icon"></i>
+              </a>
+              <div class="collapse" id="charts">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+                <span class="menu-title">Tables</span>
+                <i class="icon-grid menu-icon"></i>
+              </a>
+              <div class="collapse" id="tables">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic Table</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item nav-category"><span class="nav-link">Extra Pages</span></li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">User Pages</span>
+                <i class="icon-disc menu-icon"></i>
+              </a>
+              <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item nav-category"><span class="nav-link">Help</span></li>
+            <li class="nav-item">
+              <a class="nav-link" href="../../docs/documentation.html" target="_blank">
+                <span class="menu-title">Documentation</span>
+                <i class="icon-folder-alt menu-icon"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- partial -->
+    
+
+
+
+
+
+    {% block content %}
+{% endblock %}
+
+
+
+
+
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+  </body>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{% static 'admin_static/vendors/js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'admin_static/vendors/chart.js/chart.umd.js' %}"></script>
+    <script src="{% static 'admin_static/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
+    <script src="{% static 'admin_static/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
+    <script src="{% static 'admin_static/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'admin_static/vendors/moment/moment.min.js' %}"></script>
+    <script src="{% static 'admin_static/vendors/daterangepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'admin_static/vendors/chartist/chartist.min.js' %}"></script>
+    <script src="{% static 'admin_static/vendors/progressbar.js/progressbar.min.js' %}"></script>
+    <script src="{% static 'admin_static/js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'admin_static/js/off-canvas.js' %}"></script>
+    <script src="{% static 'admin_static/js/hoverable-collapse.js' %}"></script>
+    <script src="{% static 'admin_static/js/misc.js' %}"></script>
+    <script src="{% static 'admin_static/js/settings.js' %}"></script>
+    <script src="{% static 'admin_static/js/todolist.js' %}"></script>
+    <script src="{% static 'admin_static/js/dashboard.js' %}"></script>
+  </body>
+</html>

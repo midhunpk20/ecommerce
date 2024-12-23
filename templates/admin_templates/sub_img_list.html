@@ -1,0 +1,55 @@
+{% extends 'admin_templates/admin_header_footer.html'%}
+{% load static %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-sm-flex align-items-center mb-4">
+            <h4 class="card-title mb-sm-0">Blog Details</h4>
+          </div>
+          <div class="table-responsive border rounded p-1">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="font-weight-bold">Sub Blog Image ID</th>
+                  <th class="font-weight-bold">Under Which Blog</th>
+                  <th class="font-weight-bold">Image</th>
+                  <th class="font-weight-bold">Content</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in a %}
+                <tr style="border: solid 1px;">
+                  <td style="border: solid 1px;">{{i.id}}</td>
+                  <td style="border: solid 1px;">{{i.fk_blog.blog_name}}</td>
+                  <td style="border: solid 1px;">
+                      {% if i.image %}
+                          <img src="{{ i.image.url }}" alt="Blog Image" style="max-width: 100px;">
+                      {% else %}
+                          No Image
+                      {% endif %}
+                  </td>
+                  <td style="border: solid 1px;">{{i.content|truncatewords:3}}</td>
+
+                </tr>
+                {% endfor %}
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>
+
+{% endblock %}

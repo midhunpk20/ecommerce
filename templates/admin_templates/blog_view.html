@@ -1,0 +1,61 @@
+{% extends 'admin_templates/admin_header_footer.html'%}
+{% load static %}
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-sm-flex align-items-center mb-4">
+            <h4 class="card-title mb-sm-0">edited blogs</h4>
+          </div>
+          <div class="table-responsive border rounded p-1">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="font-weight-bold">Blog ID</th>
+                  <th class="font-weight-bold">Blog Name</th>
+                  <th class="font-weight-bold">Blog content</th>
+                  <th class="font-weight-bold">Blog Author</th>
+                  <th class="font-weight-bold">blog Image</th>
+                  <th class="font-weight-bold">Created Date</th>
+                  <th class="font-weight-bold">Created Time</th>
+                  
+
+                </tr>
+              </thead>
+              <tbody>
+              
+                <tr style="border: solid 1px;">
+                  <td style="border: solid 1px;">{{data.id}}</td>
+                  <td style="border: solid 1px;">{{data.blog_name}}</td>
+                    <td style="border: solid 1px;">{{data.blog_content}}</td>
+                    <td style="border: solid 1px;">{{data.blog_author}}</td>
+                    <td style="border: solid 1px;">
+                      {% if data.blog_img %}
+                          <img src="{{ data.blog_img.url }}" alt="Blog Image" style="max-width: 100px;">
+                      {% else %}
+                          No Image
+                      {% endif %}
+                    </td>
+                    <td style="border: solid 1px;">{{data.created_date}}</td>
+                    <td style="border: solid 1px;">{{data.created_time}}</td>
+                   
+                </tr>
+              
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>
+
+{% endblock %}

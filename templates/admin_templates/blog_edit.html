@@ -1,0 +1,70 @@
+{% extends 'admin_templates/admin_header_footer.html'%}
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="main-panel">
+  <div class="content-wrapper">
+
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Edit Blog</h4>
+          <form action="" method="post" style="margin-top: 30px; margin-left: 20px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group row">
+              <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Blog Name</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="s_blog_name" id="exampleInputUsername2" value="{{data.blog_name}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Blog Author</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="s_blog_author" id="exampleInputEmail2" value="{{data.blog_author}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="exampleInputMobile" class="col-sm-3 col-form-label">blog content</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="s_blog_content" id="exampleInputMobile" value="{{data.blog_content}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Blog Image</label>
+              <div class="col-sm-9">
+                  <!-- Display the existing image -->
+                  {% if data.blog_img %}
+                      <div class="mb-3">
+                          <img src="{{ data.blog_img.url }}" alt="Blog Image" class="img-thumbnail" style="max-width: 200px;">
+                      </div>
+                  {% endif %}
+          
+                  <!-- File input for uploading a new image -->
+                  <input type="file" class="form-control" name="s_blog_img" id="exampleInputPassword2">
+              </div>
+              
+           </div>
+      
+            <button type="submit" class="btn btn-primary me-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
