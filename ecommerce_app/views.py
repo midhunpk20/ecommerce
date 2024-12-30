@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect
 from admin_app.models import *
 
 def user_index(request):
-    return render(request,'user_side/user_index.html')
+    c =Product.objects.all()
+    return render(request,'user_side/user_index.html',{'data':c})
 
 
 # from admin_app.models import Enquiry
@@ -23,11 +24,30 @@ def user_contact(request):
         return redirect("user_index")
     return render(request,'user_side/user_contact.html')
 
-def user_shop_category(request):
-    return render(request,'user_side/user_shop_category.html')
 
-def user_shop_product_details(request):
-    return render(request,'user_side/user_shop_product_details.html')
+
+def user_shop_category(request):
+    # Get the selected category from the query parameters
+    category = request.GET.get('category', 'all')  # Default to 'all'
+
+    # Filter products based on the category
+    if category == 'all':
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(product_category=category)
+
+    # Render the template with the filtered products and current category
+    return render(request, 'user_side/user_shop_category.html', {
+        'products': products,
+        'current_category': category
+    })
+
+
+
+def user_shop_product_details(request,id):
+    data = Product.objects.get(id=id)
+
+    return render(request,'user_side/user_shop_product_details.html',{'data':data})
 
 def user_shop_product_checkout(request):
     return render(request,'user_side/user_shop_product_checkout.html')
@@ -45,7 +65,10 @@ def user_blog(request):
 def user_blog_details(request, id):
     b = Blog.objects.get(id=id)
     sub_blog_images = Sub_Blog_Image.objects.filter(fk_blog=b)  # Correct syntax for filtering
-    return render(request, 'user_side/user_blog_details.html', {'data': b, 'sub_images': sub_blog_images})
+    c = Blog.objects.all()
+    return render(request, 'user_side/user_blog_details.html', {'data': b, 'sub_images': sub_blog_images, 'more':c })
+
+
 
 def header_footer(request):
     return render(request,'user_side/header_footer.html')

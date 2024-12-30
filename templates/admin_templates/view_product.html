@@ -1,0 +1,55 @@
+{% extends 'admin_templates/admin_header_footer.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-sm-flex align-items-center mb-4">
+                            <h4 class="card-title mb-sm-0">Edited Blogs</h4>
+                        </div>
+                        <div class="border rounded p-3">
+                            <ul class="list-unstyled" style="line-height: 2; margin-left: 0;">
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Product ID:</strong> {{ data.id }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Product Name:</strong> {{ data.product_name }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Product Brand:</strong> {{ data.product_brand }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Product Price:</strong> {{ data.product_price }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Product Image:</strong>
+                                    {% if data.product_image %}
+                                        <img src="{{ data.product_image.url }}" alt="Product Image" style="max-width: 200px; border: 1px solid #ddd; border-radius: 5px;">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Product Category:</strong> {{ data.product_category }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Product Specifications:</strong> {{ data.product_specifications }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Product Highlights:</strong> {{ data.product_highlights }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

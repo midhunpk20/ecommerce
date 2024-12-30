@@ -87,16 +87,18 @@
                     <div class="blog_right_sidebar">   
                         <aside class="single_sidebar_widget popular_post_widget">
                             <h3 class="widget_title">More Blogs</h3>
+                            {% for i in more %}
                             <div class="media post_item">
-                                <img src="{% static 'img/blog/popular-post/post1.jpg' %}" alt="post">
+                                <img src="{{ i.blog_img.url }}" alt="post" style="width: 100px;height: 100px;">
                                 <div class="media-body">
-                                    <a href="blog-details.html">
-                                        <h3>Space The Final Frontier</h3>
+                                    <a href="user_side/user_blog.html">
+                                        <h4 style="font-style: oblique;">{{i.blog_name}}</h4>
                                     </a>
-                                    <p>02 Hours ago</p>
+                                    <p>{{i.created_date}}</p>
                                 </div>
                             </div>
-                            <div class="media post_item">
+                            {% endfor %}
+                            <!-- <div class="media post_item">
                                 <img src="{% static 'img/blog/popular-post/post2.jpg' %}" alt="post">
                                 <div class="media-body">
                                     <a href="blog-details.html">
@@ -104,8 +106,8 @@
                                     </a>
                                     <p>02 Hours ago</p>
                                 </div>
-                            </div>
-                            <div class="media post_item">
+                            </div> -->
+                            <!-- <div class="media post_item">
                                 <img src="{% static 'img/blog/popular-post/post3.jpg' %}" alt="post">
                                 <div class="media-body">
                                     <a href="blog-details.html">
@@ -113,8 +115,8 @@
                                     </a>
                                     <p>03 Hours ago</p>
                                 </div>
-                            </div>
-                            <div class="media post_item">
+                            </div> -->
+                            <!-- <div class="media post_item">
                                 <img src="{% static 'img/blog/popular-post/post4.jpg' %}" alt="post">
                                 <div class="media-body">
                                     <a href="blog-details.html">
@@ -122,8 +124,8 @@
                                     </a>
                                     <p>01 Hours ago</p>
                                 </div>
-                            </div>
-                            <div class="br"></div>
+                            </div> -->
+                            
                         </aside>
                     </div>
                 </div>

@@ -1,0 +1,43 @@
+{% extends 'admin_templates/admin_header_footer.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-sm-flex align-items-center mb-4">
+                            <h4 class="card-title mb-sm-0">Edited Sub Image</h4>
+                        </div>
+                        <div class="border rounded p-3">
+                            <ul class="list-unstyled" style="line-height: 2; margin-left: 0;">
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Blog ID:</strong> {{ data.id }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Under Which Blog:</strong> {{ data.fk_blog.blog_name }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Content:</strong> {{ data.content }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Image:</strong>
+                                    {% if data.image %}
+                                        <img src="{{ data.image.url }}" alt="Blog Image" style="max-width: 200px; border: 1px solid #ddd; border-radius: 5px;">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

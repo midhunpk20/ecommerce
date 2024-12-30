@@ -1,0 +1,79 @@
+{% extends 'admin_templates/admin_header_footer.html'%}
+{% load static %}
+
+{% block content %}
+
+<div class="main-panel">
+  <div class="content-wrapper">
+
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Edit Sub image</h4>
+          <form action="" method="post" style="margin-top: 30px; margin-left: 20px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Blog Name</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="blog_name" required>
+                        <option value="" disabled selected>Select a Blog</option>
+                        {% for blogs in blogs %}
+                            <option value="{{ blogs.id }}">{{ blogs.blog_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Blog Image</label>
+              <div class="col-sm-9">
+                <input type="file" class="form-control" name="s_sub_image" id="exampleInputPassword2" placeholder="Blog Sub Image">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Blog content</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="blog_content" id="exampleInputPassword2" placeholder="Blog content">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary me-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      

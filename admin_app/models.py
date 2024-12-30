@@ -22,4 +22,19 @@ class Sub_Blog_Image(models.Model):
     content = models.TextField(max_length=1000)
     
 
+class Product(models.Model):
+    CATEGORY_CHOICES = [
+        ('men_shoes', 'Men Shoes'),
+        ('women_shoes', 'Women Shoes'),
+        ('kids', 'Kids'),
+    ]
+
+    product_name =models.CharField(max_length=50)
+    product_image =models.ImageField(upload_to='product_image/')
+    product_brand =models.CharField(max_length=50)
+    product_price =models.IntegerField()
+    product_specifications =models.TextField(max_length=1000)
+    product_highlights = models.TextField(max_length=1000)
+    product_category = models.CharField(max_length=20,choices=CATEGORY_CHOICES,default='men_shoes',)
+
 

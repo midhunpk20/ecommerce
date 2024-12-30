@@ -16,5 +16,19 @@ urlpatterns = [
     # Sub Blog Image Add Code
     path('sub_img_list',list_sub_img_list,name="sub_img_list"), 
     path('sub_blog_create',create_sub_blog_image,name="sub_blog_create"),
+    path('sub_img_delete/<int:id>',delete_sub_img,name="sub_img_delete"),
+    path('sub_img_edit/<int:id>',edit_sub_img,name="sub_img_edit"),
+    path('sub_img_view/<int:id>',view_sub_img,name="sub_img_view"),
+
+    #product 
+
+    path('product_add',product_add,name="product_add"),
+    path('list_products',list_product,name="list_product"),
+    path('product_delete/<int:id>',delete_product,name="product_delete"),
+    path('product_edit/<int:id>',edit_product,name="product_edit"),
+    path('product_view/<int:id>',view_product,name="product_view")
     
     ]
+
+    # add to cart
+    

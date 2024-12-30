@@ -139,3 +139,133 @@ def create_sub_blog_image(request):
 def list_sub_img_list(request):
     a = Sub_Blog_Image.objects.all()
     return render(request,'admin_templates/sub_img_list.html',{'a':a})
+
+def delete_sub_img(request,id):
+    dele =Sub_Blog_Image.objects.get(id=id)
+    dele.delete()
+
+    return redirect('sub_img_list')
+
+def edit_sub_img(request, id):
+    data = Sub_Blog_Image.objects.get(id=id)
+    blogs = Blog.objects.all()  # Fetch all Blog objects for dropdown options
+
+    if request.method == "POST":
+        blog_id = request.POST.get('blog_name')  
+        content = request.POST.get('blog_content') 
+        image = request.FILES.get('s_sub_img', None)  
+ 
+        # Update fields if new values are provided
+        if blog_id:
+            selected_blog = Blog.objects.get(id=blog_id)
+            data.fk_blog = selected_blog 
+        if content:
+            data.content = content
+        if image:
+            data.image = image
+
+       
+        data.save()
+
+        return redirect("sub_img_list")
+
+    return render(request, 'admin_templates/sub_img_edit.html', {'data': data, 'blogs': blogs})
+
+       
+
+def view_sub_img(request,id):
+    data = Sub_Blog_Image.objects.get(id=id)
+    
+    return render(request,'admin_templates/sub_img_view.html',{'data':data})
+
+
+#product CRUD
+
+from .models import Product
+
+from django.shortcuts import render, redirect
+from .models import Product
+
+def product_add(request):
+    if request.method == "POST":
+        a = request.POST.get("product_name")
+        b = request.FILES.get("product_image")  # Use FILES for image upload
+        c = request.POST.get("product_brand")
+        d = request.POST.get("product_price")
+        e = request.POST.get("product_specifications")
+        f = request.POST.get("product_highlights")
+        g = request.POST.get("product_category")
+
+        # Validate and handle missing/invalid data if necessary
+        Product.objects.create(
+            product_name=a,
+            product_image=b,
+            product_brand=c,
+            product_price=d,
+            product_specifications=e,
+            product_highlights=f,
+            product_category=g,
+        )
+        return redirect('list_product')  # Replace 'product_list' with the actual name of your URL pattern
+    return render(request, 'admin_templates/product_add.html')  # Replace 'your_template_name.html' with your form template name
+
+
+def list_product(request):
+
+    products = Product.objects.all()
+    
+    return render(request,'admin_templates/list_product.html',{'products':products})
+
+
+def delete_product(request,id):
+    dele =Product.objects.get(id=id)
+    dele.delete()
+
+    return redirect('list_product')
+
+def edit_product(request,id):
+    data= Product.objects.get(id=id)
+
+    if request.method=="POST":
+        a = request.POST.get("product_name")
+        b = request.FILES.get("product_image")  # Use FILES for image upload
+        c = request.POST.get("product_brand")
+        d = request.POST.get("product_price")
+        e = request.POST.get("product_specifications")
+        f = request.POST.get("product_highlights")
+        g = request.POST.get("product_category")
+
+
+        if a:
+            data.product_name =a
+        if b:
+            data.product_image =b   
+        if c:
+            data.product_brand =c
+        if d:
+            data.product_price =d 
+        if e:
+            data.product_specifications =e
+        if f:
+            data.product_highlights =f 
+        if g:
+            data.product_category =g
+
+        data.save()     
+
+        return redirect("list_product")                              
+
+
+    return render(request,'admin_templates/edit_product.html',{'data':data}) 
+       
+
+def view_product(request,id):
+    data = Product.objects.get(id=id)
+    
+    return render(request,'admin_templates/view_product.html',{'data':data}) 
+
+def add_cart(request,product_id):
+    return render(request,'admin_templates/add_to_cart.html')
+
+
+

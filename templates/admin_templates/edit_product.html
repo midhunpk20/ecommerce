@@ -1,0 +1,94 @@
+{% extends 'admin_templates/admin_header_footer.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-panel">
+  <div class="content-wrapper">
+
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Edit Products</h4>
+          <form action="" method="post" style="margin-top: 30px; margin-left: 20px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group row">
+              <label for="productName" class="col-sm-3 col-form-label">Product Name</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="product_name" id="productName" value="{{data.product_name}}">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="productBrand" class="col-sm-3 col-form-label">Product Brand</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="product_brand" id="productBrand" value="{{data.product_brand}}">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="productPrice" class="col-sm-3 col-form-label">Product Price</label>
+              <div class="col-sm-9">
+                <input type="number" class="form-control" name="product_price" id="productPrice" value="{{data.product_price}}">
+              </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="productSpecifications" class="col-sm-3 col-form-label">Specifications</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="product_specifications" id="productSpecifications" rows="4">{{ data.product_specifications }}</textarea>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="productHighlights" class="col-sm-3 col-form-label">Highlights</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="product_highlights" id="productHighlights" rows="4">{{ data.product_highlights }}</textarea>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="productCategory" class="col-sm-3 col-form-label">Category</label>
+              <div class="col-sm-9">
+                  <select class="form-control" name="product_category" id="productCategory">
+                      <!-- Placeholder option -->
+                      <option value="" disabled selected>
+                          {% if data.product_category %}
+                              {{ data.product_category|title }}
+                          {% else %}
+                              Select a Category
+                          {% endif %}
+                      </option>
+          
+                      <!-- Category options -->
+                      <option value="men_shoes" {% if data.product_category == "men_shoes" %}selected{% endif %}>Men Shoes</option>
+                      <option value="women_shoes" {% if data.product_category == "women_shoes" %}selected{% endif %}>Women Shoes</option>
+                      <option value="kids" {% if data.product_category == "kids" %}selected{% endif %}>Kids</option>
+                  </select>
+              </div>
+          </div>
+          
+            
+            <div class="form-group row">
+                <label for="productImage" class="col-sm-3 col-form-label">Product Image</label>
+                <div class="col-sm-9">
+                    <input type="file" class="form-control" name="product_image" id="productImage">
+                    {% if data.product_image %}
+                        <img src="{{ data.product_image.url }}" alt="Product Image" style="max-width: 100px; margin-top: 10px;">
+                    {% endif %}
+                </div>
+            </div>
+            
+
+            <button type="submit" class="btn btn-primary me-2">Submit</button>
+            <button type="reset" class="btn btn-light">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

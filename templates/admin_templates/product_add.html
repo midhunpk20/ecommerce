@@ -1,0 +1,79 @@
+{% extends 'admin_templates/admin_header_footer.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-panel">
+  <div class="content-wrapper">
+
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add Products</h4>
+          <form action="" method="post" style="margin-top: 30px; margin-left: 20px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group row">
+              <label for="productName" class="col-sm-3 col-form-label">Product Name</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="product_name" id="productName" placeholder="Product Name">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="productBrand" class="col-sm-3 col-form-label">Product Brand</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="product_brand" id="productBrand" placeholder="Product Brand">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="productPrice" class="col-sm-3 col-form-label">Product Price</label>
+              <div class="col-sm-9">
+                <input type="number" class="form-control" name="product_price" id="productPrice" placeholder="Product Price">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="productSpecifications" class="col-sm-3 col-form-label">Specifications</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" name="product_specifications" id="productSpecifications" rows="4" placeholder="Product Specifications"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="productHighlights" class="col-sm-3 col-form-label">Highlights</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" name="product_highlights" id="productHighlights" rows="4" placeholder="Product Highlights"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="productCategory" class="col-sm-3 col-form-label">Category</label>
+              <div class="col-sm-9">
+                <select class="form-control" name="product_category" id="productCategory">
+                  <option value="men_shoes">Men Shoes</option>
+                  <option value="women_shoes">Women Shoes</option>
+                  <option value="kids">Kids</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="productImage" class="col-sm-3 col-form-label">Product Image</label>
+              <div class="col-sm-9">
+                <input type="file" class="form-control" name="product_image" id="productImage">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary me-2">Submit</button>
+            <button type="reset" class="btn btn-light">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

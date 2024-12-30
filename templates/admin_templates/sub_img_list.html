@@ -21,6 +21,9 @@
                   <th class="font-weight-bold">Under Which Blog</th>
                   <th class="font-weight-bold">Image</th>
                   <th class="font-weight-bold">Content</th>
+                  <th class="font-weight-bold">delete</th>
+                  <th class="font-weight-bold">edit</th>
+                  <th class="font-weight-bold">view</th>
 
                 </tr>
               </thead>
@@ -37,6 +40,16 @@
                       {% endif %}
                   </td>
                   <td style="border: solid 1px;">{{i.content|truncatewords:3}}</td>
+                  <td style="border: solid 1px;"><a href="{% url 'sub_img_delete' i.id %}">
+                  delete
+                  </a></td>
+                  <td style="border: solid 1px;"><a href="{% url 'sub_img_edit' i.id %}">
+                  edit
+                  </a></td>
+                  <td style="border: solid 1px;"><a href="{% url 'sub_img_view' i.id %}">
+                  view
+                  </a></td>
+
 
                 </tr>
                 {% endfor %}
