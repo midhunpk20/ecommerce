@@ -41,13 +41,13 @@
                   </td>
                   <td style="border: solid 1px;">{{i.content|truncatewords:3}}</td>
                   <td style="border: solid 1px;"><a href="{% url 'sub_img_delete' i.id %}">
-                  delete
+                    <i class="icon-trash menu-icon" style="color: red;"></i>
                   </a></td>
                   <td style="border: solid 1px;"><a href="{% url 'sub_img_edit' i.id %}">
-                  edit
+                    <i class="icon-pencil menu-icon" style="color: blue;"></i>
                   </a></td>
                   <td style="border: solid 1px;"><a href="{% url 'sub_img_view' i.id %}">
-                  view
+                    <i class="icon-eye menu-icon" style="color: green;"></i>
                   </a></td>
 
 

@@ -13,31 +13,38 @@
           <form action="" method="post" style="margin-top: 30px; margin-left: 20px;" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group row">
-                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Blog Name</label>
+                <label for="blogName" class="col-sm-3 col-form-label">Blog Name</label>
                 <div class="col-sm-9">
                     <select class="form-control" name="blog_name" required>
-                        <option value="" disabled selected>Select a Blog</option>
-                        {% for blogs in blogs %}
-                            <option value="{{ blogs.id }}">{{ blogs.blog_name }}</option>
+                        <option value="" disabled>Select a Blog</option>
+                        {% for blog in blogs %}
+                            <option value="{{ blog.id }}" {% if blog.id == data.fk_blog.id %}selected{% endif %}>
+                                {{ blog.blog_name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </div>
             </div>
             
             <div class="form-group row">
-              <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Blog Image</label>
+              <label for="blogImage" class="col-sm-3 col-form-label">Blog Image</label>
               <div class="col-sm-9">
-                <input type="file" class="form-control" name="s_sub_image" id="exampleInputPassword2" placeholder="Blog Sub Image">
+                <input type="file" class="form-control" name="s_sub_image" id="blogImage">
+                {% if data.image %}
+                    <p>Current Image: <img src="{{ data.image.url }}" alt="Blog Image" width="100"></p>
+                {% endif %}
               </div>
             </div>
+
             <div class="form-group row">
-              <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Blog content</label>
+              <label for="blogContent" class="col-sm-3 col-form-label">Blog Content</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" name="blog_content" id="exampleInputPassword2" placeholder="Blog content">
+                <input type="text" class="form-control" name="blog_content" id="blogContent" placeholder="Blog content" value="{{ data.content }}">
               </div>
             </div>
+
             <button type="submit" class="btn btn-primary me-2">Submit</button>
-            <button class="btn btn-light">Cancel</button>
+            <button type="button" class="btn btn-light" onclick="window.history.back()">Cancel</button>
           </form>
         </div>
       </div>
@@ -47,33 +54,3 @@
 </div>
 
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      

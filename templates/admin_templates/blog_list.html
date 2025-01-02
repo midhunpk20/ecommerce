@@ -1,6 +1,9 @@
 {% extends 'admin_templates/admin_header_footer.html'%}
 {% load static %}
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 
 {% block content %}
 
@@ -52,10 +55,11 @@
                       <i class="icon-trash menu-icon" style="color: red;"></i>
                     </a></td>
                     <td style="border: solid 1px;"><a href="{% url 'edit_blog' i.id %}">
-                    edit
+                      <i class="icon-pencil menu-icon" style="color: blue;"></i>
+
                     </a></td>
                     <td style="border: solid 1px;"><a href="{% url 'view_blog' i.id %}">
-                    view
+                      <i class="icon-eye menu-icon" style="color: green;"></i>
                     </a></td>
                 </tr>
                 {% endfor %}
