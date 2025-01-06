@@ -209,38 +209,24 @@
 				<div class="row">
 					{% for i in data %}
 					<div class="col-lg-4 col-md-6 mb-4">
-						<div class="single-product">
-							<img src="{{ i.product_image.url }}" alt="" style="width: 100%; height: 300px;">
-							<div class="product-details">
-								<h6 style="font-style: oblique;">{{ i.product_name }}</h6>
-								<div class="price">
+						<div class="single-product" style="border: 3px solid #ccc; box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2); border-radius: 10px; padding: 10px;">
+							<img src="{{ i.product_image.url }}" alt="" style="width: 100%; height: 300px; border-radius: 10px 10px 0 0;">
+							<div class="product-details" style="text-align: center;">
+								<h6 style="font-style: oblique; margin: 10px 0;">{{ i.product_name }}</h6>
+								<div class="price" style="margin-bottom: 10px;">
 									<h6>₹ {{ i.product_price }}</h6>
 								</div>
-								<div class="prd-bottom" style="align-items: center;">
-									<a href="{% url 'user_shop_category'%}" class="social-info">
-										<span class="lnr lnr-move"></span>
-										<p class="hover-text"> view more</p>
+								<div class="prd-bottom" style="display: flex; justify-content: center; align-items: center; height: 100px;">
+									<a href="{% url 'user_shop_category' %}" 
+									   style="position: relative; display: inline-block; padding: 10px 20px; border: 2px solid #f9851e; border-radius: 5px; overflow: hidden; text-decoration: none; color: #f9851e; background-color: transparent; font-weight: bold; transition: all 0.3s ease;">
+										<span class="lnr lnr-move" style="display: inline-block; margin-right: 8px;"></span>
+										<span class="hover-text" style="transition: transform 0.3s ease, color 0.3s ease;">View More</span>
 									</a>
-									<a href="" class="social-info">
-										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
-									</a>
-								</div>
-								<div class="prd-bottom">
-									
-									<a href="" class="social-info">
-										<span class="lnr lnr-heart"></span>
-										<p class="hover-text">Wishlist</p>
-									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-sync"></span>
-										<p class="hover-text">compare</p>
-									</a>
-
 								</div>
 							</div>
 						</div>
 					</div>
+										
 					{% endfor %}
 				</div>
 			</div>
