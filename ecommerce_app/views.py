@@ -1,5 +1,47 @@
 from django.shortcuts import render,redirect
 from admin_app.models import *
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import authenticate,login,logout
+
+
+def user_register(request):
+    if request.method == 'POST':
+        uname=request.POST.get('username')
+        pword1=request.POST.get('password1')
+        pword2=request.POST.get('password2')
+        
+        if (pword1 != pword2):
+            messages.info(request,'incorrect password')
+        else:
+            User.objects.create_user(
+                username=uname,
+                password=pword2,
+            ) 
+            messages.success(request,'Success')
+            return redirect('user_login')
+    return render(request,'user_side/user_register.html')
+    
+def user_login(request):
+    if request.method == 'POST':
+        uname=request.POST.get('username')
+        pword=request.POST.get('password')
+        user=authenticate(username=uname,password=pword)
+        if user is not None:
+            login(request,user)
+            return redirect('user_index')
+        else:
+            messages.info(request,'incorrect password')
+    return render(request,'user_side/user_login.html')         
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('user_login') 
+
+
+
+
 
 def user_index(request):
     c =Product.objects.all()
@@ -71,4 +113,5 @@ def user_blog_details(request, id):
 
 
 def header_footer(request):
-    return render(request,'user_side/header_footer.html')
+    user = request.user
+    return render(request,'user_side/header_footer.html',{'user':user})

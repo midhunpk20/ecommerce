@@ -18,8 +18,10 @@ class Blog(models.Model):
 
 class Sub_Blog_Image(models.Model):
     fk_blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='sub_blog_images')
+    name = models.CharField(max_length=50,default='default_value')
     image = models.ImageField(upload_to='sub_blog_images/')
     content = models.TextField(max_length=1000)
+    
     
 
 class Product(models.Model):

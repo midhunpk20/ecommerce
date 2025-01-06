@@ -58,14 +58,12 @@
                             </article>
                         </div>
                     </div>
-                    
                     <div class="navigation-area">
                         <div class="row">
                         </div>
                     </div>
-                </div>
-                
-                <div class="col-lg-4">
+                 </div>
+                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">   
                         <aside class="single_sidebar_widget popular_post_widget">
                             <h3 class="widget_title">More Blogs</h3>
@@ -73,10 +71,11 @@
                             <div class="media post_item">
                                 <img src="{{ i.blog_img.url }}" alt="post" style="width: 100px;height: 100px;">
                                 <div class="media-body">
-                                    <a href="user_side/user_blog.html">
+                                    <a href="{% url 'user_blog_details' i.id %}">
                                         <h4 style="font-style: oblique;">{{i.blog_name}}</h4>
                                     </a>
                                     <p>{{i.created_date}}</p>
+                                    <a href="{% url 'user_blog_details' i.id %}" class="white_bg_btn">More Details</a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -123,7 +122,11 @@
                     <div class="col-4" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
                         <img class="img-fluid" src="{{i.image.url}}" alt="" style="max-width: 100%; border-radius: 10px;">
                         <div class="quotes" style="background-color: lightgray; padding: 10px; border-radius: 5px; margin-top: 10px; width: 90%; text-align: center;">
-                            <p style="margin: 0;">{{i.content}}</p>
+                            <p style="margin: 0; color: black;">{{i.name}}</p>
+                        </div>
+                        <div class="quotes" style="background-color: lightgray; padding: 10px; border-radius: 5px;
+                         margin-top: 10px; width: 90%; text-align: center; height: 50%;">
+                            <p style="margin: 0;color: black;">{{i.content}}</p>
                         </div>
                     </div>
                     {% endfor %}

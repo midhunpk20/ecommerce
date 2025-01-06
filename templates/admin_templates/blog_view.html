@@ -1,60 +1,51 @@
-{% extends 'admin_templates/admin_header_footer.html'%}
+{% extends 'admin_templates/admin_header_footer.html' %}
 {% load static %}
 
 {% block content %}
 
 <div class="main-panel">
     <div class="content-wrapper">
-<div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-sm-flex align-items-center mb-4">
-            <h4 class="card-title mb-sm-0">edited blogs</h4>
-          </div>
-          <div class="table-responsive border rounded p-1">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th class="font-weight-bold">Blog ID</th>
-                  <th class="font-weight-bold">Blog Name</th>
-                  <th class="font-weight-bold">Blog content</th>
-                  <th class="font-weight-bold">Blog Author</th>
-                  <th class="font-weight-bold">blog Image</th>
-                  <th class="font-weight-bold">Created Date</th>
-                  <th class="font-weight-bold">Created Time</th>
-                  
-
-                </tr>
-              </thead>
-              <tbody>
-              
-                <tr style="border: solid 1px;">
-                  <td style="border: solid 1px;">{{data.id}}</td>
-                  <td style="border: solid 1px;">{{data.blog_name}}</td>
-                    <td style="border: solid 1px;">{{data.blog_content}}</td>
-                    <td style="border: solid 1px;">{{data.blog_author}}</td>
-                    <td style="border: solid 1px;">
-                      {% if data.blog_img %}
-                          <img src="{{ data.blog_img.url }}" alt="Blog Image" style="max-width: 100px;">
-                      {% else %}
-                          No Image
-                      {% endif %}
-                    </td>
-                    <td style="border: solid 1px;">{{data.created_date}}</td>
-                    <td style="border: solid 1px;">{{data.created_time}}</td>
-                   
-                </tr>
-              
-
-
-              </tbody>
-            </table>
-          </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-sm-flex align-items-center mb-4">
+                            <h4 class="card-title mb-sm-0">Edited Blogs</h4>
+                        </div>
+                        <div class="border rounded p-3">
+                            <ul class="list-unstyled" style="line-height: 2; margin-left: 0;">
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Blog ID:</strong> {{ data.id }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Blog Name:</strong> {{ data.blog_name }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Blog Content:</strong> {{ data.blog_content }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Blog Author:</strong> {{ data.blog_author }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Blog Image:</strong>
+                                    {% if data.blog_img %}
+                                        <img src="{{ data.blog_img.url }}" alt="Blog Image" style="max-width: 200px; border: 1px solid #ddd; border-radius: 5px;">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Created Date:</strong> {{ data.created_date }}
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <strong>Created Time:</strong> {{ data.created_time }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
     </div>
 </div>
 

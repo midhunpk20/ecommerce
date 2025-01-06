@@ -19,6 +19,7 @@
                 <tr>
                   <th class="font-weight-bold">Sub Blog Image ID</th>
                   <th class="font-weight-bold">Under Which Blog</th>
+                  <th class="font-weight-bold">Blog Name</th>
                   <th class="font-weight-bold">Image</th>
                   <th class="font-weight-bold">Content</th>
                   <th class="font-weight-bold">delete</th>
@@ -39,6 +40,7 @@
                           No Image
                       {% endif %}
                   </td>
+                  <td style="border: solid 1px;">{{i.name}}</td>
                   <td style="border: solid 1px;">{{i.content|truncatewords:3}}</td>
                   <td style="border: solid 1px;"><a href="{% url 'sub_img_delete' i.id %}">
                     <i class="icon-trash menu-icon" style="color: red;"></i>

@@ -120,6 +120,7 @@ def create_sub_blog_image(request):
 
     if request.method == 'POST':
         image = request.FILES['s_sub_image']
+        name = request.POST.get('name')
         blog_id = request.POST.get('blog_name')
         selected_blog = Blog.objects.get(id=blog_id) 
         content =request.POST.get('blog_content')
@@ -128,6 +129,7 @@ def create_sub_blog_image(request):
         Sub_Blog_Image.objects.create(
             fk_blog=selected_blog,  # Associate the image with the selected blog
             image=image,
+            name =name,
             content=content
 
         )
@@ -151,7 +153,8 @@ def edit_sub_img(request, id):
     blogs = Blog.objects.all()  # Fetch all Blog objects for dropdown options
 
     if request.method == "POST":
-        blog_id = request.POST.get('blog_name')  
+        blog_id = request.POST.get('blog_name')
+        name = request.POST.get('name')  
         content = request.POST.get('blog_content') 
         image = request.FILES.get('s_sub_img', None)  
  
@@ -159,6 +162,8 @@ def edit_sub_img(request, id):
         if blog_id:
             selected_blog = Blog.objects.get(id=blog_id)
             data.fk_blog = selected_blog 
+        if name:
+            data.name = name    
         if content:
             data.content = content
         if image:
