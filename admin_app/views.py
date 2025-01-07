@@ -22,7 +22,15 @@ def admin_login(request):
     return render(request,'admin_templates/admin_login.html')
 
 def admin_home(request):
-    return render(request,'admin_templates/admin_home.html')
+    total_products = Product.objects.count()
+    total_sub_products = Sub_Blog_Image.objects.count()
+    total_blogs = Blog.objects.count()
+    total_enquiry = Enquiry.objects.count()
+    return render(request,'admin_templates/admin_home.html',
+                  {'tp':total_products,
+                   'tsp':total_sub_products,
+                   'tb':total_blogs,
+                   'te':total_enquiry})
 
 def admin_header(request):
     user = request.user

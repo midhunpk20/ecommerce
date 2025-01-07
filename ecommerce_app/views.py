@@ -94,9 +94,6 @@ def user_shop_product_details(request,id):
 def user_shop_product_checkout(request):
     return render(request,'user_side/user_shop_product_checkout.html')
 
-def user_shop_shopcart(request):
-    return render(request,'user_side/user_shop_shopcart.html')
-
 def user_shop_conformation(request):
     return render(request,'user_side/user_shop_conformation.html')
 
@@ -115,3 +112,65 @@ def user_blog_details(request, id):
 def header_footer(request):
     user = request.user
     return render(request,'user_side/header_footer.html',{'user':user})
+
+
+def addcart(request,id):
+    user=User.objects.get(username=request.user.username)
+    if user:
+        single_product=Product.objects.get(id=id)
+        check=Cart.objects.filter(fk_product=single_product,fk_user=user).first()
+        if check:
+            check.quantity += 1
+            check.sub_total = (check.quantity * check.fk_product.product_price)
+            check.save()
+            return redirect("user_shop_shopcart")
+        else:
+            Cart.objects.create(
+                fk_user=user,
+                fk_product=single_product,
+                quantity=1,
+                sub_total=single_product.product_price
+                )
+            
+        return redirect ("user_shop_shopcart")
+
+
+
+
+def user_shop_shopcart(request):
+    cartitem=Cart.objects.filter(fk_user=request.user).all().order_by("-id")
+    total = 0
+    count=0
+    for i in cartitem:
+        count += i.quantity
+        total += i.sub_total
+   
+    return render (request,'user_side/user_shop_shopcart.html',{
+        'cartitem':cartitem,
+        'total':total,
+        'count':count,
+        })
+    
+    
+
+def plus(request,id):
+    item=Cart.objects.get(id=id)
+    item.quantity += 1
+    item.sub_total = (item.quantity * item.fk_product.product_price)
+    item.save()
+    return redirect("user_shop_shopcart")
+
+def minus(request,id):
+    item=Cart.objects.get(id=id)
+    if item.quantity > 0:
+        item.quantity -= 1
+        item.sub_total = (item.quantity * item.fk_product.product_price)
+        item.save()
+    else:
+        item.delete()
+    return redirect("user_shop_shopcart")
+
+def itemdelete(request,id):
+    item=Cart.objects.get(id=id)
+    item.delete()
+    return redirect("user_shop_shopcart")
