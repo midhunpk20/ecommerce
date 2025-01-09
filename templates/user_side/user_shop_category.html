@@ -10,7 +10,7 @@
                 <h1>Shop Category Page</h1>
                 <nav class="d-flex align-items-center">
                     <a href="{% url 'user_index' %}">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="{% url 'user_shop_category' %}">Shop<span class="lnr lnr-arrow-right"></span></a>
                     <a href="#">Category</a>
                 </nav>
             </div>
@@ -53,7 +53,10 @@
                             <div class="product-details">
                                 <h6>{{ product.product_name }}</h6>
                                 <div class="price">
-                                    <h6>${{ product.product_price }}</h6>
+                                    <h6 style="font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold; color: #333;">
+										<span style="font-size: 1.2rem; vertical-align: middle; color: #010101;">₹</span> {{ product.product_price  }} /-
+									</h6>
+
                                 </div>
                                 <div class="prd-bottom" style="display: flex; justify-content: center; align-items: center; height: 50px;">
                                     <a href="{% url 'user_shop_product_details' product.id %}" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: 100%; color: #333; background-color: #f7f7f7; border-radius: 5px; padding: 10px;">

@@ -26,7 +26,10 @@
 												  border: none; cursor: pointer;">
 										<span class="lnr lnr-cross"></span>
 									</a>
-									<span class="add-text text-uppercase">For Purchase</span>
+									<a href="{% url 'user_shop_category' %}">
+										<span class="add-text text-uppercase">For Purchase</span>
+									</a>
+									
 								</div>
 
 
@@ -63,7 +66,7 @@
 						</div>
 						<div class="col-lg-7">
 							<div class="banner-img">
-								<img class="img-fluid" src="{% static 'img/banner/banner-img.png' %}" alt="">
+								<img class="img-fluid"  alt="">
 							</div>
 						</div>
 					</div>
@@ -214,7 +217,10 @@
 							<div class="product-details" style="text-align: center;">
 								<h6 style="font-style: oblique; margin: 10px 0;">{{ i.product_name }}</h6>
 								<div class="price" style="margin-bottom: 10px;">
-									<h6>₹ {{ i.product_price }}</h6>
+									<h6 style="font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold; color: #333;">
+										<span style="font-size: 1.2rem; vertical-align: middle; color: #010101;">₹</span> {{ i.product_price }} /-
+									</h6>
+									
 								</div>
 								<div class="prd-bottom" style="display: flex; justify-content: center; align-items: center; height: 100px;">
 									<a href="{% url 'user_shop_category' %}" 

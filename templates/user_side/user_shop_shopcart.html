@@ -9,7 +9,11 @@
                 <div class="col-first">
                     <h1>Shopping Cart</h1>
                     <nav class="d-flex align-items-center">
-                        <a href="#">Cart</a>
+                        <a href="{% url 'user_index' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{% url 'user_shop_category' %}">Shop<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{% url 'user_shop_shopcart' %}">Cart</a>
+                        
+
                     </nav>
                 </div>
             </div>
@@ -30,7 +34,8 @@
                                 <th scope="col">Price</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Total</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col">Trash</th>
+                                <th scope="col">Book Now</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,7 +52,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <h5>${{ item.fk_product.product_price }}</h5>
+                                    <h5>₹{{ item.fk_product.product_price }}</h5>
                                 </td>
                                 <td  class="product-name">
                                         
@@ -63,7 +68,7 @@
                                 
                                 </td>
                                 <td>
-                                    <h5>${{ item.sub_total }}</h5>
+                                    <h5>₹{{ item.sub_total }}</h5>
                                 </td>
                                 <td>
                                     <form action="{% url 'itemdelete' item.id %}" method="post">
@@ -71,13 +76,26 @@
                                         <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                                     </form>
                                 </td>
+                                <td>
+                                    <form action="{% url 'user_book_now' item.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm" 
+                                        style="background-color: orange;color: aliceblue;">Book Now</button>
+                                    </form>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-end">
-                        <h4>Total: ${{ total }}</h4>
-                    </div>
+
+                    <p style="background-color: black; color: white; padding: 10px 20px; border-radius: 5px; float: right; margin-right: 105px; display: inline-block;">
+                        <span style="margin-right: 10px;">Grand Total:</span>
+                        <span>₹ {{ total }}</span><br><br>
+                        <span style="margin-right: 10px;">Total Items:</span>
+                        <span>{{ total_cart_count }} Pieces</span>
+                    </p>
+                   
+                    
                 </div>
                 {% else %}
                 <div class="text-center">

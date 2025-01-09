@@ -28,4 +28,13 @@ urlpatterns = [
     path('minus/<int:id>/',minus,name="minus"),
     path('itemdelete/<int:id>/',itemdelete,name="itemdelete"),
     
+    
+    
+    path('book-now/<int:item_id>/',user_book_now, name='user_book_now'),
+    
+    path('your_order',your_order,name="your_order"),
+    
+    
 ]
+
+

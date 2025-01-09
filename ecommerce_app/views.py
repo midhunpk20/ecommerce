@@ -136,6 +136,7 @@ def addcart(request,id):
 
 
 
+from django.db.models import Sum
 
 def user_shop_shopcart(request):
     cartitem=Cart.objects.filter(fk_user=request.user).all().order_by("-id")
@@ -144,11 +145,14 @@ def user_shop_shopcart(request):
     for i in cartitem:
         count += i.quantity
         total += i.sub_total
+        
+    total_cart_count = cartitem.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
    
     return render (request,'user_side/user_shop_shopcart.html',{
         'cartitem':cartitem,
         'total':total,
         'count':count,
+        'total_cart_count':total_cart_count
         })
     
     
@@ -174,3 +178,49 @@ def itemdelete(request,id):
     item=Cart.objects.get(id=id)
     item.delete()
     return redirect("user_shop_shopcart")
+
+
+    
+def user_book_now(request, item_id):
+    cart_item = Cart.objects.filter(id=item_id, fk_user=request.user).first()
+    
+    if cart_item:
+        # Create an order
+        order = Order.objects.create(
+            fk_user=request.user,
+            total_amount=cart_item.sub_total
+        )
+
+        # Add the selected cart item to the order
+        OrderItem.objects.create(
+            order=order,
+            fk_product=cart_item.fk_product,
+            quantity=cart_item.quantity,
+            sub_total=cart_item.sub_total
+        )
+
+        # Optionally, remove the item from the cart
+        cart_item.delete()
+
+        return render(request, 'user_side/user_buy_now.html', {
+            'order': order,
+            'cart_item': cart_item,
+            'total': order.total_amount,
+            'quantity': cart_item.quantity
+        })
+    else:
+        return render(request, 'user_side/user_buy_now.html', {
+            'error': 'The selected item does not exist in your cart.'
+        })
+
+
+
+
+def your_order(request):
+    # Get all orders of the current user
+    user_orders = Order.objects.filter(fk_user=request.user).order_by('-created_at')
+
+    # Pass orders and their items to the template
+    return render(request, 'user_side/user_order.html', {
+        'user_orders': user_orders,
+    })

@@ -1,0 +1,43 @@
+{% extends 'user_side/header_footer.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Book Now</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="{% url 'user_index' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{% url 'user_shop_category' %}">Shop<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{% url 'user_shop_shopcart' %}">Cart<span class="lnr lnr-arrow-right"></span></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <section class="book-now-area d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+        <div class="container">
+            <div class="card mx-auto" style="max-width: 600px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px;">
+                <div class="card-body text-center p-4">
+                    <!-- Order Information -->
+                    <h3 class="card-title mb-3">Order Details</h3>
+                    <hr>
+                    <h5>Order ID: {{ order.id }}</h5>
+                    <p><strong>Ordered By:</strong> {{ order.fk_user.username }}</p>
+                    <p><strong>Order Date:</strong> {{ order.created_at }}</p>
+                    <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+                    <hr>
+                    <!-- Product Information -->
+                    <h5>Product: {{ cart_item.fk_product.product_name }}</h5>
+                    <p><strong>Price per item:</strong> ₹{{ cart_item.fk_product.product_price }}</p>
+                    <p><strong>Quantity:</strong> {{ quantity }}</p>
+                    <p><strong>Total Price:</strong> ₹{{ total }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
