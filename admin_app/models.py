@@ -37,9 +37,12 @@ class Product(models.Model):
     product_image =models.ImageField(upload_to='product_image/')
     product_brand =models.CharField(max_length=50)
     product_price =models.IntegerField()
+    discount_price = models.IntegerField(default=0)
     product_specifications =models.TextField(max_length=1000)
     product_highlights = models.TextField(max_length=1000)
     product_category = models.CharField(max_length=20,choices=CATEGORY_CHOICES,default='men_shoes',)
+    
+    
 
 
 class Cart(models.Model):

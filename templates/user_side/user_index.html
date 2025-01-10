@@ -218,8 +218,18 @@
 								<h6 style="font-style: oblique; margin: 10px 0;">{{ i.product_name }}</h6>
 								<div class="price" style="margin-bottom: 10px;">
 									<h6 style="font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold; color: #333;">
-										<span style="font-size: 1.2rem; vertical-align: middle; color: #010101;">₹</span> {{ i.product_price }} /-
+										<span style="font-size: 1.2rem; vertical-align: middle; color: #010101;">
+											₹ {{ i.product_price }} /-
+										</span>
 									</h6>
+									<span style="font-size: 1rem; vertical-align: middle; color: rgb(13, 131, 33);">
+										Offer {{ i.discount_percentage|floatformat:0 }}%!
+									</span>
+									<br><br>
+									<span style="font-size: 1rem; font-weight: bold; color: rgb(13, 131, 33);">
+										₹ {{ i.total_price }} /-
+									</span>
+									
 									
 								</div>
 								<div class="prd-bottom" style="display: flex; justify-content: center; align-items: center; height: 100px;">

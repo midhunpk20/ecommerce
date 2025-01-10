@@ -22,8 +22,7 @@
                                         <th class="font-weight-bold">Product Name</th>
                                         <th class="font-weight-bold">Brand</th>
                                         <th class="font-weight-bold">Price</th>
-                                        <th class="font-weight-bold">Specifications</th>
-                                        <th class="font-weight-bold">Highlights</th>
+                                        <th class="font-weight-bold">Discount Price</th>
                                         <th class="font-weight-bold">Category</th>
                                         <th class="font-weight-bold">Image</th>
                                         <th class="font-weight-bold">Delete</th>
@@ -38,8 +37,7 @@
                                         <td style="border: solid 1px;">{{ product.product_name|truncatewords:3 }}</td>
                                         <td style="border: solid 1px;">{{ product.product_brand }}</td>
                                         <td style="border: solid 1px;">{{ product.product_price }}</td>
-                                        <td style="border: solid 1px;">{{ product.product_specifications|truncatewords:3 }}</td>
-                                        <td style="border: solid 1px;">{{ product.product_highlights|truncatewords:3 }}</td>
+                                        <td style="border: solid 1px;">{{ product.discount_price }}</td>
                                         <td style="border: solid 1px;">{{ product.product_category }}</td>
                                         <td style="border: solid 1px;">
                                             {% if product.product_image %}

@@ -32,6 +32,7 @@
                             <tr>
                                 <th scope="col">Product</th>
                                 <th scope="col">Price</th>
+                                <th scope="col">Discount Price</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Total</th>
                                 <th scope="col">Trash</th>
@@ -53,6 +54,9 @@
                                 </td>
                                 <td>
                                     <h5>₹{{ item.fk_product.product_price }}</h5>
+                                </td>
+                                <td>
+                                    <h5>₹{{ item.fk_product.discount_price }}</h5>
                                 </td>
                                 <td  class="product-name">
                                         

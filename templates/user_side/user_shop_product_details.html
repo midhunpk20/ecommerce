@@ -34,20 +34,42 @@
 						{% endif %}
 						</div>
 				</div>
+
+
 				<div class="col-lg-5 offset-lg-1">
+					<!-- Product Details Container -->
+					
+				
+					<!-- Product Price Details -->
 					<div class="s_product_text">
-						<h3>{{data.product_name}}</h3>
-						<h2>{{data.product_price}} /-</h2>
-						<ul class="list">
-							<li><a href=""><span>Brand Name</span> : {{data.product_brand}}</a></li>
-							<li><a class="active" href="#"><span>Category</span> : {{data.product_category}}</a></li>
-							<li><a href="#"><span>Availibility</span> : In Stock</a></li>
+						<span style="display: flex; align-items: center; margin-bottom: 10px;">
+							<!-- Product Name -->
+							<h3 style="margin: 0; margin-right: 10px; font-size: 1.5rem;">{{ data.product_name }}</h3>
+							<!-- Discount Badge -->
+							<span style="padding: 10px; border-radius: 50%;
+										background: radial-gradient(circle, rgb(57, 106, 19) 0%, rgb(57, 106, 19) 60%, rgb(57, 106, 19) 100%);
+										font-size: 1.2rem; color: white; font-weight: bold; width: 50px; height: 50px;
+										text-align: center; line-height: 30px;
+										box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3), -2px -2px 6px rgba(255, 255, 255, 0.3);">
+								{{ data.discount_percentage|floatformat:0 }}%
+							</span>
+						</span>
+						<h4 style="font-size: 1rem; color: red; margin-right: 15px; text-decoration: line-through; font-weight: bold;">Price: {{ data.product_price }} /-</h4>
+						<h4 style="margin: 5px 0 10px; font-size: 1rem; color: green;">Offer Price: {{ data.total_price }} /-</h4>
+						<ul class="list" style="margin-top: 10px;">
+							<li><a href=""><span>Brand Name</span>: {{ data.product_brand }}</a></li>
+							<li><a class="active" href="#"><span>Category</span>: {{ data.product_category }}</a></li>
+							<li><a href="#"><span>Availability</span>: In Stock</a></li>
 						</ul>
-						<div class="btn" style="background-color: orange;margin-top: 15px;">
-							<a href="{% url 'cartview' data.id %}" style="color: aliceblue;padding-left: 30px;padding-right: 30px;">Add To Cart</a>
+						<div class="btn" style="background-color: orange; margin-top: 15px;">
+							<a href="{% url 'cartview' data.id %}" style="color: aliceblue; padding-left: 30px; padding-right: 30px;">Add To Cart</a>
 						</div>
-					</div>	
+					</div>
 				</div>
+				
+				
+
+
 			</div>
 		</div>
 		<div class="container">

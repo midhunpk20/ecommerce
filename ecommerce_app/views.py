@@ -44,9 +44,18 @@ def user_logout(request):
 
 
 def user_index(request):
-    c =Product.objects.all()
-    return render(request,'user_side/user_index.html',{'data':c})
+    c = Product.objects.all()
+    for i in c:
+        if i.product_price > 0 and i.discount_price > 0:
+            i.discount_percentage = round(
+                (i.discount_price / i.product_price) * 100
+            )
+            i.total_price = i.product_price - i.discount_price
+        else:
+            i.discount_percentage = 0
+            i.total_price = i.product_price  # Default to product price if no discount
 
+    return render(request, 'user_side/user_index.html', {'data': c})
 
 # from admin_app.models import Enquiry
 
@@ -78,6 +87,17 @@ def user_shop_category(request):
     else:
         products = Product.objects.filter(product_category=category)
 
+    # Calculate discount percentage and total price for each product
+    for i in products:
+        if i.product_price > 0 and i.discount_price > 0:
+            i.discount_percentage = round(
+                ( i.discount_price / i.product_price) * 100
+            )
+            i.total_price = i.product_price - i.discount_price
+        else:
+            i.discount_percentage = 0
+            i.total_price = i.product_price  # Default to product price if no discount
+
     # Render the template with the filtered products and current category
     return render(request, 'user_side/user_shop_category.html', {
         'products': products,
@@ -85,11 +105,25 @@ def user_shop_category(request):
     })
 
 
+def user_shop_product_details(request, id):
+    # Retrieve the product by ID
+    product = Product.objects.get(id=id)
+    
+    # Calculate discount percentage and total price
+    if product.product_price > 0 and product.discount_price > 0:
+        product.discount_percentage = round(
+            (product.discount_price / product.product_price) * 100
+        )
+        product.total_price = product.product_price - product.discount_price
+    else:
+        product.discount_percentage = 0
+        product.total_price = product.product_price  # Default to product price if no discount
+    
+    # Render the template with the product details
+    return render(request, 'user_side/user_shop_product_details.html', {
+        'data': product
+    })
 
-def user_shop_product_details(request,id):
-    data = Product.objects.get(id=id)
-
-    return render(request,'user_side/user_shop_product_details.html',{'data':data})
 
 def user_shop_product_checkout(request):
     return render(request,'user_side/user_shop_product_checkout.html')
@@ -113,66 +147,80 @@ def header_footer(request):
     user = request.user
     return render(request,'user_side/header_footer.html',{'user':user})
 
-
-def addcart(request,id):
-    user=User.objects.get(username=request.user.username)
+def addcart(request, id):
+    user = User.objects.get(username=request.user.username)
     if user:
-        single_product=Product.objects.get(id=id)
-        check=Cart.objects.filter(fk_product=single_product,fk_user=user).first()
+        single_product = Product.objects.get(id=id)
+        
+        # Assuming there's a discount field on the product model (e.g., discount_price)
+        discount_price = single_product.discount_price if hasattr(single_product, 'discount_price') else 0
+        
+        # If a product is already in the cart, increase the quantity
+        check = Cart.objects.filter(fk_product=single_product, fk_user=user).first()
         if check:
             check.quantity += 1
-            check.sub_total = (check.quantity * check.fk_product.product_price)
+            # Adjust the sub_total by applying the discount
+            check.sub_total = (check.quantity * (single_product.product_price - discount_price))
             check.save()
             return redirect("user_shop_shopcart")
         else:
+            # If it's a new product, create a new cart item with the discount
             Cart.objects.create(
                 fk_user=user,
                 fk_product=single_product,
                 quantity=1,
-                sub_total=single_product.product_price
-                )
+                sub_total=single_product.product_price - discount_price
+            )
             
-        return redirect ("user_shop_shopcart")
+        return redirect("user_shop_shopcart")
+
 
 
 
 from django.db.models import Sum
 
 def user_shop_shopcart(request):
-    cartitem=Cart.objects.filter(fk_user=request.user).all().order_by("-id")
+    cartitem = Cart.objects.filter(fk_user=request.user).all().order_by("-id")
     total = 0
-    count=0
+    count = 0
     for i in cartitem:
         count += i.quantity
-        total += i.sub_total
+        # Assuming the product has a discount_price attribute
+        discount_price = i.fk_product.discount_price if hasattr(i.fk_product, 'discount_price') else 0
+        total += (i.quantity * (i.fk_product.product_price - discount_price))
         
     total_cart_count = cartitem.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-   
-    return render (request,'user_side/user_shop_shopcart.html',{
-        'cartitem':cartitem,
-        'total':total,
-        'count':count,
-        'total_cart_count':total_cart_count
-        })
     
-    
+    return render(request, 'user_side/user_shop_shopcart.html', {
+        'cartitem': cartitem,
+        'total': total,
+        'count': count,
+        'total_cart_count': total_cart_count
+    })
 
-def plus(request,id):
-    item=Cart.objects.get(id=id)
+
+def plus(request, id):
+    item = Cart.objects.get(id=id)
     item.quantity += 1
-    item.sub_total = (item.quantity * item.fk_product.product_price)
+    # Assuming the product has a discount_price attribute
+    discount_price = item.fk_product.discount_price if hasattr(item.fk_product, 'discount_price') else 0
+    item.sub_total = (item.quantity * (item.fk_product.product_price - discount_price))
     item.save()
     return redirect("user_shop_shopcart")
 
-def minus(request,id):
-    item=Cart.objects.get(id=id)
-    if item.quantity > 0:
+
+def minus(request, id):
+    item = Cart.objects.get(id=id)
+    if item.quantity > 1:  # Ensure quantity doesn't go below 1
         item.quantity -= 1
-        item.sub_total = (item.quantity * item.fk_product.product_price)
+        # Assuming the product has a discount_price attribute
+        discount_price = item.fk_product.discount_price if hasattr(item.fk_product, 'discount_price') else 0
+        item.sub_total = (item.quantity * (item.fk_product.product_price - discount_price))
         item.save()
     else:
         item.delete()
     return redirect("user_shop_shopcart")
+
 
 def itemdelete(request,id):
     item=Cart.objects.get(id=id)

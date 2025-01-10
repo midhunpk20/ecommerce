@@ -208,6 +208,7 @@ def product_add(request):
         e = request.POST.get("product_specifications")
         f = request.POST.get("product_highlights")
         g = request.POST.get("product_category")
+        h = request.POST.get("discount_price")
 
         # Validate and handle missing/invalid data if necessary
         Product.objects.create(
@@ -215,6 +216,7 @@ def product_add(request):
             product_image=b,
             product_brand=c,
             product_price=d,
+            discount_price=h,
             product_specifications=e,
             product_highlights=f,
             product_category=g,
@@ -247,6 +249,7 @@ def edit_product(request,id):
         e = request.POST.get("product_specifications")
         f = request.POST.get("product_highlights")
         g = request.POST.get("product_category")
+        h = request.POST.get("discount_price")
 
 
         if a:
@@ -263,6 +266,8 @@ def edit_product(request,id):
             data.product_highlights =f 
         if g:
             data.product_category =g
+        if h:
+            data.discount_price =h
 
         data.save()     
 
@@ -281,4 +286,17 @@ def add_cart(request,product_id):
     return render(request,'admin_templates/add_to_cart.html')
 
 
+from .models import *
 
+def order_list(request):
+    # Get the filter parameter for the user (if provided)
+    username = request.GET.get('username', None)
+    
+    # Base QuerySet
+    orders = Order.objects.prefetch_related('items__fk_product').select_related('fk_user')
+    
+    # Apply filter if a username is provided
+    if username:
+        orders = orders.filter(fk_user__username__icontains=username)
+    
+    return render(request, 'admin_templates/order_list.html', {'orders': orders})

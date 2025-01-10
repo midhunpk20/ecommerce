@@ -43,34 +43,102 @@
 
         <!-- Products Display -->
         <div class="col-xl-9 col-lg-8 col-md-7">
-            <section class="lattest-product-area pb-40 category-list">
-                <div class="row">
-                    {% for product in products %}
-                    <!-- Single Product -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-product">
-                            <img class="img-fluid" src="{{ product.product_image.url }}" alt="{{ product.product_name }}" style="height: 300px; width: 250px;">
-                            <div class="product-details">
-                                <h6>{{ product.product_name }}</h6>
-                                <div class="price">
-                                    <h6 style="font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold; color: #333;">
-										<span style="font-size: 1.2rem; vertical-align: middle; color: #010101;">₹</span> {{ product.product_price  }} /-
-									</h6>
+                <section class="lattest-product-area pb-40 category-list">
+                    <div class="row">
+                        {% for product in products %}
+                        <!-- Single Product -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="single-product" style="position: relative; overflow: hidden;">
+                                <!-- Product Image -->
+                                <img class="img-fluid" src="{{ product.product_image.url }}"
+                                    alt="{{ product.product_name }}" style="height: 300px; width: 250px;">
 
+                                <!-- Offer Text at Top-Left -->
+                                <div
+                                    style="position: absolute; top: 10px; left: 100px; display: flex; align-items: center; animation: moveOffer 15s linear infinite;">
+                                    <!-- Offer Text -->
+                                    <div
+                                        style="font-size: 1.5rem; font-weight: bold; color: rgb(48, 147, 24); margin-right: 15px;">
+                                        Offer/-
+                                    </div>
+
+                                    <!-- Offer Circle with Percentage -->
+                                    <div
+                                        style="padding: 10px; border-radius: 50%;
+                                                background: radial-gradient(circle, rgb(209, 48, 34) 0%, rgb(255, 72, 0) 60%, rgb(255, 0, 0) 100%);
+                                                font-size: 1.2rem; color: white; font-weight: bold; width: 50px; height: 50px;
+                                                text-align: center; line-height: 30px;
+                                                box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3), -2px -2px 6px rgba(255, 255, 255, 0.3);">
+                                        {{ product.discount_percentage|floatformat:0 }}%
+                                    </div>
                                 </div>
-                                <div class="prd-bottom" style="display: flex; justify-content: center; align-items: center; height: 50px;">
-                                    <a href="{% url 'user_shop_product_details' product.id %}" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: 100%; color: #333; background-color: #f7f7f7; border-radius: 5px; padding: 10px;">
-                                        <p style="margin: 0; font-size: 14px; font-weight: bold;">view Details</p>
-                                    </a>
+
+                                <!-- Product Details -->
+                                <div class="product-details" style="display: flex; flex-direction: column; 
+                                align-items: center; justify-content: center; padding: 20px; border-radius: 10px;">
+                                    <!-- Product Name -->
+                                    <h6 style="font-size: 1rem; font-weight: bold; margin-bottom: 15px;">
+                                        {{ product.product_name }}
+                                    </h6>
+
+                                    <!-- Price and Discount -->
+                                    <div class="price"
+                                        style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                        <!-- Actual Price with Strikethrough -->
+                                        <span
+                                            style="font-size: 1rem; color: red; margin-right: 15px; text-decoration: line-through; font-weight: bold;">
+                                            ₹ {{ product.product_price }}.00 /
+                                        </span>
+                                    </div>
+
+                                    <!-- Total Price -->
+                                    <span style="font-size: 1rem; color: rgb(13, 131, 33); margin-bottom: 15px;">
+                                        Price : <span style="font-size: 1.3rem; font-weight: bold;">
+                                            ₹ {{product.total_price }}.00 /-</span>
+                                    </span>
+
+                                    <!-- View Details Button -->
+                                    <div class="prd-bottom"
+                                        style="display: flex; justify-content: center; align-items: center; height: 50px; width: 100%;">
+                                        <a href="{% url 'user_shop_product_details' product.id %}"
+                                            style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: 100%; color: #333; background-color: #f7f7f7; border-radius: 5px; padding: 10px;">
+                                            <p style="margin: 0; font-size: 14px; font-weight: bold;">view Details</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    
-                    {% endfor %}
-                </div>
-            </section>
+                </section>
+            </div>
+
+           <!-- Optimized animation duration -->
+<style>
+    @keyframes moveOffer {
+        0% {
+            left: -100%;
+            opacity: 1;
+        }
+
+        50% {
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 1;
+        }
+
+        100% {
+            left: 100%;
+            opacity: 0;
+        }
+    }
+
+    .animation-class {
+        animation: moveOffer 2s linear infinite; /* Reduced to 2s for much faster animation */
+    }
+</style>
+
+
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}

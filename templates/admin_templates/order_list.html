@@ -1,0 +1,71 @@
+{% extends 'admin_templates/admin_header_footer.html' %}
+{% load static %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-sm-flex align-items-center mb-4">
+                            <h4 class="card-title mb-sm-0">Order Summary</h4>
+                        </div>
+                        
+                        <!-- Filter Form -->
+                        <form method="get" class="mb-4">
+                            <div class="form-group row">
+                                <label for="username" class="col-sm-2 col-form-label">Filter by Username</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" value="{{ request.GET.username }}">
+                                </div>
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <div class="table-responsive border rounded p-1">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="font-weight-bold">Order ID</th>
+                                        <th class="font-weight-bold">User</th>
+                                        <th class="font-weight-bold">Created At</th>
+                                        <th class="font-weight-bold">Product</th>
+                                        <th class="font-weight-bold">Quantity</th>
+                                        <th class="font-weight-bold">Subtotal</th>
+                                        <th class="font-weight-bold">Total Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    {% for item in order.items.all %}
+                                    <tr style="border: solid 1px;">
+                                        <td style="border: solid 1px;">{{ order.id }}</td>
+                                        <td style="border: solid 1px;">{{ order.fk_user.username }}</td>
+                                        <td style="border: solid 1px;">{{ order.created_at }}</td>
+                                        <td style="border: solid 1px;">{{ item.fk_product.product_name }}</td>
+                                        <td style="border: solid 1px;">{{ item.quantity }}</td>
+                                        <td style="border: solid 1px;">{{ item.sub_total }}</td>
+                                        {% if forloop.first %}
+                                        <td rowspan="{{ order.items.count }}" style="border: solid 1px;">{{ order.total_amount }}</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="7" class="text-center">No orders found.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
