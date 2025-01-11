@@ -34,6 +34,8 @@ urlpatterns = [
     
     path('your_order',your_order,name="your_order"),
     
+    path('order-success/<int:order_id>/',order_success, name='order_success'),
+    
     
 ]
 

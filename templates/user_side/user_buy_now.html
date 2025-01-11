@@ -1,43 +1,61 @@
 {% extends 'user_side/header_footer.html' %}
-{% load static %}
 
 {% block content %}
-    <!-- Start Banner Area -->
-    <section class="banner-area organic-breadcrumb">
-        <div class="container">
-            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-                <div class="col-first">
-                    <h1>Book Now</h1>
-                    <nav class="d-flex align-items-center">
-                        <a href="{% url 'user_index' %}">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="{% url 'user_shop_category' %}">Shop<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="{% url 'user_shop_shopcart' %}">Cart<span class="lnr lnr-arrow-right"></span></a>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Banner Area -->
+<section class="book-now-area d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+    <div class="container">
+        <div class="card mx-auto" style="max-width: 600px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px;">
+            <div class="card-body text-center p-4">
+                <h3 class="card-title mb-3">Order Details</h3>
+                <hr>
+                <!-- Display order details -->
+                <h5>Order ID: {{ order.id|default:"Not created yet" }}</h5>
+                <p><strong>Ordered By:</strong> {{ order.fk_user.username|default:"-" }}</p>
+                <p><strong>Order Date:</strong> {{ order.created_at|default:"-" }}</p>
+                <p><strong>Total Amount:</strong> ₹{{ order.total_amount|default:"-" }}</p>
+                <hr>
 
-    <section class="book-now-area d-flex align-items-center justify-content-center" style="min-height: 70vh;">
-        <div class="container">
-            <div class="card mx-auto" style="max-width: 600px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px;">
-                <div class="card-body text-center p-4">
-                    <!-- Order Information -->
-                    <h3 class="card-title mb-3">Order Details</h3>
-                    <hr>
-                    <h5>Order ID: {{ order.id }}</h5>
-                    <p><strong>Ordered By:</strong> {{ order.fk_user.username }}</p>
-                    <p><strong>Order Date:</strong> {{ order.created_at }}</p>
-                    <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
-                    <hr>
-                    <!-- Product Information -->
-                    <h5>Product: {{ cart_item.fk_product.product_name }}</h5>
-                    <p><strong>Price per item:</strong> ₹{{ cart_item.fk_product.product_price }}</p>
-                    <p><strong>Quantity:</strong> {{ quantity }}</p>
-                    <p><strong>Total Price:</strong> ₹{{ total }}</p>
-                </div>
+                <!-- Product Information -->
+                <h5>Product: {{ cart_item.fk_product.product_name }}</h5>
+                <p><strong>Price per item:</strong> ₹{{ cart_item.fk_product.product_price }}</p>
+                <p><strong>Quantity:</strong> {{ quantity }}</p>
+                <p><strong>Total Price:</strong> ₹{{ total }}</p>
+                <hr>
+
+                <!-- Shipping Information -->
+                <h4>Shipping Information</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group text-left">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="address">Address:</label>
+                        <textarea id="address" name="address" class="form-control" rows="2" required></textarea>
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="landmark">Landmark:</label>
+                        <input type="text" id="landmark" name="landmark" class="form-control">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" class="form-control" required>
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="mobile_number">Mobile Number:</label>
+                        <input type="text" id="mobile_number" name="mobile_number" class="form-control" required>
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Place Order</button>
+                </form>
+                {% if error %}
+                    <p style="color: red; margin-top: 10px;">{{ error }}</p>
+                {% endif %}
             </div>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}

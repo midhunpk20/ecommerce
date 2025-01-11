@@ -1,0 +1,61 @@
+<!-- order_success.html -->
+
+{% extends 'user_side/header_footer.html' %}
+
+{% block content %}
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Order Success</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="{% url 'user_index' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{% url 'user_shop_category' %}">Shop<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{% url 'user_shop_shopcart' %}">Cart<span class="lnr lnr-arrow-right"></span></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="order-success-area">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <h2>Order Placed Successfully!</h2>
+                    <p>Thank you for your order. Your order has been placed successfully.</p>
+                    <h4>Order ID: {{ order.id }}</h4>
+                    <p><strong>Ordered By:</strong> {{ order.fk_user.username }}</p>
+                    <p><strong>Order Date:</strong> {{ order.created_at }}</p>
+                    <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+
+                    <hr>
+
+                    <h5>Shipping Information:</h5>
+                    <p><strong>Name:</strong> {{ order.shippingaddress.name }}</p>
+                    <p><strong>Address:</strong> {{ order.shippingaddress.address }}</p>
+                    <p><strong>Landmark:</strong> {{ order.shippingaddress.landmark }}</p>
+                    <p><strong>City:</strong> {{ order.shippingaddress.city }}</p>
+                    <p><strong>Mobile Number:</strong> {{ order.shippingaddress.mobile_number }}</p>
+                    <p><strong>Email:</strong> {{ order.shippingaddress.email }}</p>
+
+                    <hr>
+
+                    <h5>Order Items:</h5>
+                    {% for item in order.orderitem_set.all %}
+                        <p><strong>Product:</strong> {{ item.fk_product.product_name }}</p>
+                        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                        <p><strong>Price per item:</strong> ₹{{ item.fk_product.product_price }}</p>
+                        <p><strong>Total Price:</strong> ₹{{ item.sub_total }}</p>
+                        <hr>
+                    {% endfor %}
+
+                    <p>If you have any questions, please contact our support team.</p>
+
+                    <a href="{% url 'user_shop_category' %}" class="btn btn-primary">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

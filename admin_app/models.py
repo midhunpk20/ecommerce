@@ -73,3 +73,20 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.fk_product.product_name} (x{self.quantity})"
+
+
+from django.db import models
+from django.contrib.auth.models import User
+from .models import Order
+
+class ShippingAddress(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    address = models.TextField()
+    landmark = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    mobile_number = models.CharField(max_length=15)
+    email = models.EmailField()
+
+    def __str__(self):
+        return f"Shipping Address for Order {self.order.id}"

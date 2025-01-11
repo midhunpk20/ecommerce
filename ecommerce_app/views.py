@@ -179,24 +179,6 @@ def addcart(request, id):
 
 from django.db.models import Sum
 
-def user_shop_shopcart(request):
-    cartitem = Cart.objects.filter(fk_user=request.user).all().order_by("-id")
-    total = 0
-    count = 0
-    for i in cartitem:
-        count += i.quantity
-        # Assuming the product has a discount_price attribute
-        discount_price = i.fk_product.discount_price if hasattr(i.fk_product, 'discount_price') else 0
-        total += (i.quantity * (i.fk_product.product_price - discount_price))
-        
-    total_cart_count = cartitem.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-    
-    return render(request, 'user_side/user_shop_shopcart.html', {
-        'cartitem': cartitem,
-        'total': total,
-        'count': count,
-        'total_cart_count': total_cart_count
-    })
 
 
 def plus(request, id):
@@ -228,12 +210,48 @@ def itemdelete(request,id):
     return redirect("user_shop_shopcart")
 
 
+def your_order(request):
+    # Get all orders of the current user
+    user_orders = Order.objects.filter(fk_user=request.user).order_by('-created_at')
+
+    # Pass orders and their items to the template
+    return render(request, 'user_side/user_order.html', {
+        'user_orders': user_orders,
+    })
+
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+
+def user_shop_shopcart(request):
+    cartitem = Cart.objects.filter(fk_user=request.user).all().order_by("-id")
+    total = 0
+    count = 0
+    for i in cartitem:
+        count += i.quantity
+        # Assuming the product has a discount_price attribute
+        discount_price = i.fk_product.discount_price if hasattr(i.fk_product, 'discount_price') else 0
+        total += (i.quantity * (i.fk_product.product_price - discount_price))
+        
+    total_cart_count = cartitem.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
     
+    return render(request, 'user_side/user_shop_shopcart.html', {
+        'cartitem': cartitem,
+        'total': total,
+        'count': count,
+        'total_cart_count': total_cart_count
+    })
+
 def user_book_now(request, item_id):
+    # Get the selected cart item
     cart_item = Cart.objects.filter(id=item_id, fk_user=request.user).first()
-    
-    if cart_item:
-        # Create an order
+
+    if not cart_item:
+        return render(request, 'user_side/user_buy_now.html', {
+            'error': 'The selected item does not exist in your cart.'
+        })
+
+    if request.method == 'POST':
+        # Create the order
         order = Order.objects.create(
             fk_user=request.user,
             total_amount=cart_item.sub_total
@@ -247,28 +265,69 @@ def user_book_now(request, item_id):
             sub_total=cart_item.sub_total
         )
 
-        # Optionally, remove the item from the cart
+        # Handle shipping form submission
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        landmark = request.POST.get('landmark')
+        city = request.POST.get('city')
+        mobile_number = request.POST.get('mobile_number')
+        email = request.POST.get('email')
+
+        # Validate form fields
+        if not all([name, address, city, mobile_number, email]):
+            return render(request, 'user_side/user_buy_now.html', {
+                'cart_item': cart_item,
+                'total': cart_item.sub_total,
+                'quantity': cart_item.quantity,
+                'error': 'Please fill out all required fields.',
+                'order': order,
+            })
+
+        # Create shipping address
+        ShippingAddress.objects.create(
+            order=order,
+            name=name,
+            address=address,
+            landmark=landmark,
+            city=city,
+            mobile_number=mobile_number,
+            email=email
+        )
+
+        # Remove item from cart
         cart_item.delete()
 
-        return render(request, 'user_side/user_buy_now.html', {
-            'order': order,
-            'cart_item': cart_item,
-            'total': order.total_amount,
-            'quantity': cart_item.quantity
-        })
-    else:
-        return render(request, 'user_side/user_buy_now.html', {
-            'error': 'The selected item does not exist in your cart.'
-        })
+        # Send confirmation email
+        try:
+            send_mail(
+                'Order Confirmation',
+                f'Thank you for your order. Order ID: {order.id}, Total Amount: ₹{order.total_amount}',
+                'no-reply@yourdomain.com',
+                [request.user.email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            return render(request, 'user_side/order_success.html', {
+                'order': order,
+                'error': f'Order placed, but email failed to send. Error: {str(e)}'
+            })
 
+        return redirect('order_success', order_id=order.id)
 
-
-
-def your_order(request):
-    # Get all orders of the current user
-    user_orders = Order.objects.filter(fk_user=request.user).order_by('-created_at')
-
-    # Pass orders and their items to the template
-    return render(request, 'user_side/user_order.html', {
-        'user_orders': user_orders,
+    # Handle GET request for initial load or refresh
+    return render(request, 'user_side/user_buy_now.html', {
+        'order': None,  # No order created yet in GET
+        'cart_item': cart_item,
+        'total': cart_item.sub_total,
+        'quantity': cart_item.quantity,
     })
+
+
+from django.shortcuts import render, get_object_or_404
+
+def order_success(request, order_id):
+    # Retrieve the order by its ID or return a 404 error if not found
+    order = get_object_or_404(Order, id=order_id)
+    
+    # Render the success page with the order data
+    return render(request, 'user_side/order_success.html', {'order': order})

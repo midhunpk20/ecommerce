@@ -77,16 +77,17 @@
                                 <td>
                                     <form action="{% url 'itemdelete' item.id %}" method="post">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" style="margin-top: 18px;">Remove</button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="{% url 'user_book_now' item.id %}" method="post">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger btn-sm" 
-                                        style="background-color: orange;color: aliceblue;">Book Now</button>
-                                    </form>
+                                    <a href="{% url 'user_book_now' item.id %}" 
+                                       class="btn btn-sm" 
+                                       style="background-color: orange; color: aliceblue; text-decoration: none;">
+                                        Book Now
+                                    </a>
                                 </td>
+                                
                             </tr>
                             {% endfor %}
                         </tbody>
