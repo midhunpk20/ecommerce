@@ -90,3 +90,20 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return f"Shipping Address for Order {self.order.id}"
+
+
+class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('admin_contact_enquiry', 'admin_contact_enquiry'),
+        ('admin_order', 'admin_order'),
+        ('user_cart', 'user_cart'),
+        ('user_order', 'user_order'),
+    ]
+    
+    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES, unique=True)
+    count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.notification_type} - {self.count}"
+    
+    

@@ -39,9 +39,12 @@ def admin_header(request):
 from .models import Enquiry
 
 def admin_contact(request):
-    data =Enquiry.objects.all()    
-    
-    return render(request,'admin_templates/admin_contact.html',{'key':data})
+    data = Enquiry.objects.all()    
+
+    # Reset notification count for admin_contact_enquiry
+    Notification.objects.filter(notification_type='admin_contact_enquiry').update(count=0)
+    return render(request, 'admin_templates/admin_contact.html', {'key': data})
+
 
 def admin_delete(request,id):
     dele =Enquiry.objects.get(id=id)
@@ -298,6 +301,8 @@ def order_item_list(request):
     # Apply filter if a username is provided
     if username:
         order_items = order_items.filter(order__fk_user__username__icontains=username)
+        
+    Notification.objects.filter(notification_type='admin_order').update(count=0)
     
     return render(request, 'admin_templates/order_item_list.html', {'order_items': order_items})
 

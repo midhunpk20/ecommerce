@@ -59,46 +59,76 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item active"><a class="nav-link" href="{% url 'user_index' %}">Home</a></li>
+							<li class="nav-item active"><a class="nav-link" href="{% url 'user_index' %}" style="font-size: 13px;">Home</a></li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Shop</a>
+								 aria-expanded="false" style="font-size: 13px;">Shop</a>
 								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="{% url 'user_shop_category' %}">Shop Category</a></li>
-									<li class="nav-item"><a class="nav-link" href="{% url 'user_shop_product_checkout' %}">Product Checkout</a></li>
-									<li class="nav-item"><a class="nav-link" href="{% url 'user_shop_shopcart' %}">Shopping Cart</a></li>
-									<li class="nav-item"><a class="nav-link" href="{% url 'user_shop_conformation' %}">Confirmation</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url 'user_shop_category' %}" style="font-size: 13px;">Shop Category</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url 'user_shop_product_checkout' %}" style="font-size: 13px;">Product Checkout</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url 'user_shop_shopcart' %}" style="font-size: 13px;">Shopping Cart</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url 'user_shop_conformation' %}" style="font-size: 13px;">Confirmation</a></li>
 								</ul>
 							</li>
-							<li class="nav-item"><a class="nav-link" href="{% url 'user_blog' %}">Blogs</a></li>
+							<li class="nav-item"><a class="nav-link" href="{% url 'user_blog' %}" style="font-size: 13px;">Blogs</a></li>
 							
-							<li class="nav-item"><a class="nav-link" href="{% url 'user_contact' %}">Contact</a></li>
+							<li class="nav-item"><a class="nav-link" href="{% url 'user_contact' %}" style="font-size: 13px;">Contact</a></li>
 						</ul>
+
+
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="{% url 'user_shop_shopcart' %}" class="cart"><span class="ti-bag"></span></a></li>
+							<li class="nav-item" style="position: relative;">
+								<a href="{% url 'user_shop_shopcart' %}" class="nav-link" style="position: relative;">
+									<span class="fa fa-shopping-cart" style="font-weight: bold; font-size: 15px;"></span>
+									{% if user_cart_count > 0 %}
+										<span class="badge notification-count" 
+											  style="position: absolute; top: 25px; right: -10px; 
+													 background-color: red; color: white; 
+													 font-size: 11px; font-weight: bold; width: 20px; height: 20px; 
+													 border-radius: 50%; text-align: center; line-height: 15px;">
+											{{ user_cart_count }}
+										</span>
+									{% endif %}
+								</a>
+							</li>
 						</ul>
+
+						
+						
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item">
 								<a href="{% url 'user_logout' %}" class="nav-link">
-									<i class="fas fa-sign-out-alt"></i>
+									<i class="fas fa-sign-out-alt" style="font-weight: bold; font-size: 15px;"></i>
 								</a>
 							</li>
 						</ul>
 
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item">
-								<a href="{% url 'your_order' %}" class="nav-link">
-									<span class="ti-check-box"></span>
+							<li class="nav-item" style="position: relative;">
+								<a href="{% url 'your_order' %}" class="nav-link" style="position: relative;">
+									<span class="ti-check-box" style="font-weight: bold; font-size: 15px;"></span>
+									{% if user_order_count > 0 %}
+										<span class="badge notification-count" 
+											  style="position: absolute; top: 25px; right: -10px; 
+													 background-color: red; color: white; 
+													 font-size: 11px; font-weight: bold; width: 20px; height: 20px; 
+													 border-radius: 50%; text-align: center; line-height: 15px;">
+											{{ user_order_count }}
+										</span>
+									{% endif %}
 								</a>
 							</li>
 						</ul>
+						
+						
 
 						<ul class="nav navbar-nav navbar-right">
 							{% if user.is_authenticated %}
 								<li class="nav-item">
 									<!-- User Profile Icon and Username -->
 									<a href="{% url 'user_index' %}" class="nav-link">
-										<i class="fas fa-user-circle" style="margin-right:3px;"></i> {{ user.username }}
+										<i class="fas fa-user-circle" style="font-weight: bold; font-size: 15px;margin-right:3px;margin-top: 35px;"></i> 
+										<span style="font-size: 13px;">{{ user.username }}</span>
 									</a>
 									
 								</li>

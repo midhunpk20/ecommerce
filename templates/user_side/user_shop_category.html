@@ -98,13 +98,26 @@
                                     </span>
 
                                     <!-- View Details Button -->
-                                    <div class="prd-bottom"
-                                        style="display: flex; justify-content: center; align-items: center; height: 50px; width: 100%;">
-                                        <a href="{% url 'user_shop_product_details' product.id %}"
-                                            style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: 100%; color: #333; background-color: #f7f7f7; border-radius: 5px; padding: 10px;">
-                                            <p style="margin: 0; font-size: 14px; font-weight: bold;">view Details</p>
-                                        </a>
-                                    </div>
+                                    <div class="add-to-cart" 
+                                    style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+                                    <button 
+                                        class="add-cart-btn" 
+                                        data-product-id="{{ product.id }}"
+                                        style="border: none; background: none; cursor: pointer; display: flex; align-items: center;">
+                                        <i class="fa fa-shopping-cart" style="font-size: 1.5rem; color: #28a745;"></i>
+                                        <span style="margin-left: 8px; font-size: 1rem; font-weight: bold; color: #333;">Add to Cart</span>
+                                    </button>
+                                </div>
+        
+                                <!-- View Details Button -->
+                                <div class="prd-bottom"
+                                    style="display: flex; justify-content: center; align-items: center; height: 50px; width: 100%;">
+                                    <a href="{% url 'user_shop_product_details' product.id %}"
+                                        style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: 100%; color: #333; background-color: #f7f7f7; border-radius: 5px; padding: 10px;">
+                                        <p style="margin: 0; font-size: 14px; font-weight: bold;">View Details</p>
+                                    </a>
+                                </div>
+
                                 </div>
                             </div>
                         </div>
@@ -141,4 +154,31 @@
 
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.add-cart-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.getAttribute('data-product-id');
+        
+                fetch(`/all_addcart/${productId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token for Django security
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert(data.message); // Show success message
+                        location.reload(); // Refresh the page
+                    } else {
+                        alert(data.message); // Show error message
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+    
     {% endblock %}

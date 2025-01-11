@@ -75,6 +75,16 @@ def user_contact(request):
             subject = subject,
             message = message
         )
+        # Ensure the notification exists
+        notification, created = Notification.objects.get_or_create(
+            notification_type='admin_contact_enquiry',
+            defaults={'count': 0}
+        )
+        print(f"Notification created: {created}, current count: {notification.count}")  # Debugging
+        notification.count += 1
+        notification.save()
+
+                
         return redirect("user_index")
     return render(request,'user_side/user_contact.html')
 
@@ -216,6 +226,8 @@ def itemdelete(request,id):
 def your_order(request):
     # Get all orders of the current user
     user_orders = Order.objects.filter(fk_user=request.user).order_by('-created_at')
+    
+    Notification.objects.filter(notification_type='user_order').update(count=0)
 
     # Pass orders and their items to the template
     return render(request, 'user_side/user_order.html', {
@@ -236,6 +248,8 @@ def user_shop_shopcart(request):
         total += (i.quantity * (i.fk_product.product_price - discount_price))
         
     total_cart_count = cartitem.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+    
+    Notification.objects.filter(notification_type='user_cart').update(count=0)
     
     return render(request, 'user_side/user_shop_shopcart.html', {
         'cartitem': cartitem,
@@ -333,6 +347,22 @@ def user_book_now(request, item_id):
                 'order': order,
                 'error': f'Order placed, but email failed to send. Error: {str(e)}'
             })
+            
+            # Increment Admin Notification
+        admin_notification, created = Notification.objects.get_or_create(
+            notification_type='admin_order',
+            defaults={'count': 0}
+        )
+        admin_notification.count += 1
+        admin_notification.save()
+
+        # Increment User Notification
+        user_notification, created = Notification.objects.get_or_create(
+            notification_type='user_order',
+            defaults={'count': 0}
+        )
+        user_notification.count += 1
+        user_notification.save()
 
         return redirect('order_success', order_id=order.id)
 
@@ -357,3 +387,52 @@ def order_success(request, order_id):
     
     # Render the success page with the order data
     return render(request, 'user_side/order_success.html', {'order': order})
+
+
+
+
+
+from django.http import JsonResponse
+
+from django.http import JsonResponse
+
+def all_addcart(request, id):
+    user = User.objects.get(username=request.user.username)
+    if user:
+        single_product = Product.objects.get(id=id)
+
+        # Assuming there's a discount field on the product model (e.g., discount_price)
+        discount_price = single_product.discount_price if hasattr(single_product, 'discount_price') else 0
+
+        # If a product is already in the cart, increase the quantity
+        check = Cart.objects.filter(fk_product=single_product, fk_user=user).first()
+        if check:
+            check.quantity += 1
+            # Adjust the sub_total by applying the discount
+            check.sub_total = (check.quantity * (single_product.product_price - discount_price))
+            check.save()
+        else:
+            # If it's a new product, create a new cart item with the discount
+            Cart.objects.create(
+                fk_user=user,
+                fk_product=single_product,
+                quantity=1,
+                sub_total=single_product.product_price - discount_price
+            )
+
+        # Update or create admin notification
+        admin_notification, created = Notification.objects.get_or_create(
+            notification_type='user_cart',
+            defaults={'count': 0}
+        )
+        admin_notification.count += 1
+        admin_notification.save()
+
+        return JsonResponse({
+            "status": "success",
+            "message": "Product added to the cart." if not check else "Product quantity updated in the cart.",
+            "quantity": check.quantity if check else 1,
+            "sub_total": check.sub_total if check else single_product.product_price - discount_price,
+        })
+
+    return JsonResponse({"status": "error", "message": "User not found."})

@@ -232,6 +232,16 @@
 									
 									
 								</div>
+								<div class="add-to-cart" 
+								style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+								<button 
+									class="add-cart-btn" 
+									data-product-id="{{ i.id }}"
+									style="border: none; background: none; cursor: pointer; display: flex; align-items: center;">
+									<i class="fa fa-shopping-cart" style="font-size: 1.5rem; color: #28a745;"></i>
+									<span style="margin-left: 8px; font-size: 1rem; font-weight: bold; color: #333;">Add to Cart</span>
+								</button>
+							</div>
 								<div class="prd-bottom" style="display: flex; justify-content: center; align-items: center; height: 100px;">
 									<a href="{% url 'user_shop_category' %}" 
 									   style="position: relative; display: inline-block; padding: 10px 20px; border: 2px solid #f9851e; border-radius: 5px; overflow: hidden; text-decoration: none; color: #f9851e; background-color: transparent; font-weight: bold; transition: all 0.3s ease;">
@@ -539,4 +549,32 @@
 		</div>
 	</div>
 </section>
+
+<script>
+	document.querySelectorAll('.add-cart-btn').forEach(button => {
+		button.addEventListener('click', function () {
+			const productId = this.getAttribute('data-product-id');
+	
+			fetch(`/all_addcart/${productId}/`, {
+				method: 'POST',
+				headers: {
+					'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token for Django security
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.status === "success") {
+					alert(data.message); // Show success message
+					location.reload(); // Refresh the page
+				} else {
+					alert(data.message); // Show error message
+				}
+			})
+			.catch(error => console.error('Error:', error));
+		});
+	});
+</script>
+
+	
 {% endblock %}
