@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .details {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">Order Confirmation</div>
+        <p class="details">
+            Hi {{ user.username }},<br><br>
+            Thank you for your order! Here are the details of your purchase:<br><br>
+            <strong>Order ID:</strong> {{ order.id }}<br>
+            <strong>Total Amount:</strong> ₹{{ order.total_amount }}<br>
+            <strong>Shipping Address:</strong><br>
+            {{ name }}<br>
+            {{ address }}<br>
+            {{ landmark }}<br>
+            {{ city }}<br><br>
+            <strong>Contact Information:</strong><br>
+            Mobile: {{ mobile_number }}<br>
+            Email: {{ email }}<br>
+        </p>
+        <div class="footer">
+            If you have any questions, please contact us at support@yourdomain.com.<br>
+            Thank you for shopping with us!
+        </div>
+    </div>
+</body>
+</html>

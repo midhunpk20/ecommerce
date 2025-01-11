@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center mb-4">
-                            <h4 class="card-title mb-sm-0">Order Summary</h4>
+                            <h4 class="card-title mb-sm-0">Order Item List</h4>
                         </div>
                         
                         <!-- Filter Form -->
@@ -36,31 +36,26 @@
                                         <th class="font-weight-bold">Product</th>
                                         <th class="font-weight-bold">Quantity</th>
                                         <th class="font-weight-bold">Subtotal</th>
-                                        <th class="font-weight-bold">Total Amount</th>
                                         <th class="font-weight-bold">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for order in orders %}
-                                    {% for item in order.items.all %}
-                                    <tr style="border: solid 1px;">
-                                        <td style="border: solid 1px;">{{ order.id }}</td>
-                                        <td style="border: solid 1px;">{{ order.fk_user.username }}</td>
-                                        <td style="border: solid 1px;">{{ order.created_at }}</td>
-                                        <td style="border: solid 1px;">{{ item.fk_product.product_name }}</td>
-                                        <td style="border: solid 1px;">{{ item.quantity }}</td>
-                                        <td style="border: solid 1px;">{{ item.sub_total }}</td>
-                                        {% if forloop.first %}
-                                        <td rowspan="{{ order.items.count }}" style="border: solid 1px;">{{ order.total_amount }}</td>
-                                        <td rowspan="{{ order.items.count }}" style="border: solid 1px;">
-                                            <a href="{% url 'shipping_details' order.id %}" class="btn btn-success btn-sm">Details</a>
+                                    {% for item in order_items %}
+                                    <tr>
+                                        <td>{{ item.order.id }}</td>
+                                        <td>{{ item.order.fk_user.username }}</td>
+                                        <td>{{ item.order.created_at }}</td>
+                                        <td>{{ item.fk_product.product_name }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td>{{ item.sub_total }}</td>
+                                        <td>
+                                            <!-- Add an action for each item, for example, 'Details' -->
+                                            <a href="{% url 'shipping_details' item.order.id %}" class="btn btn-success btn-sm">Details</a>
                                         </td>
-                                        {% endif %}
                                     </tr>
-                                    {% endfor %}
                                     {% empty %}
                                     <tr>
-                                        <td colspan="7" class="text-center">No orders found.</td>
+                                        <td colspan="7" class="text-center">No order items found.</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

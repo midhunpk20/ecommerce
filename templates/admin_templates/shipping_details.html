@@ -1,0 +1,23 @@
+{% extends 'admin_templates/admin_header_footer.html' %}
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" style="color: green;">Shipping Details for Order {{ order.id }}</h2>
+                        <p><strong>Name:</strong> {{ shipping_address.name }}</p>
+                        <p><strong>Address:</strong> {{ shipping_address.address }}</p>
+                        <p><strong>Landmark:</strong> {{ shipping_address.landmark }}</p>
+                        <p><strong>City:</strong> {{ shipping_address.city }}</p>
+                        <p><strong>Mobile Number:</strong> {{ shipping_address.mobile_number }}</p>
+                        <p><strong>Email:</strong> {{ shipping_address.email }}</p>
+                        <a href="{% url 'order_list' %}" class="btn" style="background-color:red;color: white;">Back to Orders</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

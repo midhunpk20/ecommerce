@@ -288,6 +288,19 @@ def add_cart(request,product_id):
 
 from .models import *
 
+def order_item_list(request):
+    # Get the filter parameter for the user (if provided)
+    username = request.GET.get('username', None)
+    
+    # Base QuerySet for Order Items
+    order_items = OrderItem.objects.select_related('order__fk_user', 'fk_product')
+    
+    # Apply filter if a username is provided
+    if username:
+        order_items = order_items.filter(order__fk_user__username__icontains=username)
+    
+    return render(request, 'admin_templates/order_item_list.html', {'order_items': order_items})
+
 def order_list(request):
     # Get the filter parameter for the user (if provided)
     username = request.GET.get('username', None)
@@ -300,3 +313,9 @@ def order_list(request):
         orders = orders.filter(fk_user__username__icontains=username)
     
     return render(request, 'admin_templates/order_list.html', {'orders': orders})
+
+from django.shortcuts import render, get_object_or_404
+def shipping_details(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    shipping_address = get_object_or_404(ShippingAddress, order=order)
+    return render(request, 'admin_templates/shipping_details.html', {'order': order, 'shipping_address': shipping_address})

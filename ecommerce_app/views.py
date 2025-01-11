@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 
+from django.core.mail import EmailMultiAlternatives  # Import this for HTML email
+from django.template.loader import render_to_string  # To render HTML template
+from django.utils.html import strip_tags  # To create plain text fallback
 
 def user_register(request):
     if request.method == 'POST':
@@ -240,6 +243,14 @@ def user_shop_shopcart(request):
         'count': count,
         'total_cart_count': total_cart_count
     })
+    
+    
+from django.conf import settings
+from django.shortcuts import render, redirect
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 
 def user_book_now(request, item_id):
     # Get the selected cart item
@@ -280,7 +291,6 @@ def user_book_now(request, item_id):
                 'total': cart_item.sub_total,
                 'quantity': cart_item.quantity,
                 'error': 'Please fill out all required fields.',
-                'order': order,
             })
 
         # Create shipping address
@@ -297,15 +307,27 @@ def user_book_now(request, item_id):
         # Remove item from cart
         cart_item.delete()
 
-        # Send confirmation email
+        # Send confirmation email (optional, error handling is here)
         try:
-            send_mail(
-                'Order Confirmation',
-                f'Thank you for your order. Order ID: {order.id}, Total Amount: ₹{order.total_amount}',
-                'no-reply@yourdomain.com',
-                [request.user.email],
-                fail_silently=False,
+            html_content = render_to_string('user_side/order_confirmation.html', {
+                'user': request.user,
+                'order': order,
+                'name': name,
+                'address': address,
+                'landmark': landmark,
+                'city': city,
+                'mobile_number': mobile_number,
+                'email': email
+            })
+            plain_text_content = strip_tags(html_content)
+            email_message = EmailMultiAlternatives(
+                subject='Order Confirmation',
+                body=plain_text_content,  # Plain text content for fallback
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[email],  # User-provided email address
             )
+            email_message.attach_alternative(html_content, "text/html")  # Attach HTML content
+            email_message.send()
         except Exception as e:
             return render(request, 'user_side/order_success.html', {
                 'order': order,
@@ -322,12 +344,16 @@ def user_book_now(request, item_id):
         'quantity': cart_item.quantity,
     })
 
-
 from django.shortcuts import render, get_object_or_404
+
 
 def order_success(request, order_id):
     # Retrieve the order by its ID or return a 404 error if not found
     order = get_object_or_404(Order, id=order_id)
+    
+    # Debugging: print shipping address
+    if order.shippingaddress_set.exists():
+        print("Shipping Address:", order.shippingaddress_set.first())
     
     # Render the success page with the order data
     return render(request, 'user_side/order_success.html', {'order': order})

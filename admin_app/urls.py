@@ -30,6 +30,8 @@ urlpatterns = [
     
     
     path('order_list',order_list,name="order_list"),
+    path('order-items/',order_item_list, name='order_item_list'),
+    path('order/<int:order_id>/shipping-details/',shipping_details, name='shipping_details'),
     
     ]
 
