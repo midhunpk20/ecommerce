@@ -226,19 +226,37 @@ def itemdelete(request,id):
 def your_order(request):
     # Get all orders of the current user
     user_orders = Order.objects.filter(fk_user=request.user).order_by('-created_at')
-    
-    Notification.objects.filter(notification_type='user_order').update(count=0)
+
+    # Update the notification count to 0 only for the current user
+    user_order_notification = Notification.objects.filter(
+        notification_type='user_order', 
+        user=request.user
+    ).first()
+
+    if user_order_notification:
+        # If the notification exists for the user, reset the count to 0
+        user_order_notification.count = 0
+        user_order_notification.save()
+    else:
+        # If no notification exists for the user, create one with 0 count
+        Notification.objects.create(
+            notification_type='user_order', 
+            user=request.user, 
+            count=0
+        )
 
     # Pass orders and their items to the template
     return render(request, 'user_side/user_order.html', {
         'user_orders': user_orders,
     })
 
+
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
-
 def user_shop_shopcart(request):
+    # Get the cart items for the current user
     cartitem = Cart.objects.filter(fk_user=request.user).all().order_by("-id")
+    
     total = 0
     count = 0
     for i in cartitem:
@@ -249,15 +267,32 @@ def user_shop_shopcart(request):
         
     total_cart_count = cartitem.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
     
-    Notification.objects.filter(notification_type='user_cart').update(count=0)
+    # Update the notification count to 0 only for the current user
+    user_cart_notification = Notification.objects.filter(
+        notification_type='user_cart', 
+        user=request.user
+    ).first()
     
+    if user_cart_notification:
+        # If the notification exists for the user, reset the count to 0
+        user_cart_notification.count = 0
+        user_cart_notification.save()
+    else:
+        # If no notification exists for the user, create one with 0 count
+        Notification.objects.create(
+            notification_type='user_cart', 
+            user=request.user, 
+            count=0
+        )
+
+    # Render the cart page with the updated data
     return render(request, 'user_side/user_shop_shopcart.html', {
         'cartitem': cartitem,
         'total': total,
         'count': count,
         'total_cart_count': total_cart_count
     })
-    
+
     
 from django.conf import settings
 from django.shortcuts import render, redirect
@@ -357,12 +392,13 @@ def user_book_now(request, item_id):
         admin_notification.save()
 
         # Increment User Notification
-        user_notification, created = Notification.objects.get_or_create(
-            notification_type='user_order',
-            defaults={'count': 0}
-        )
-        user_notification.count += 1
-        user_notification.save()
+        user_order_notification, created = Notification.objects.get_or_create(
+        notification_type='user_order',
+        user=request.user,
+        defaults={'count': 0}
+            )
+        user_order_notification.count += 1
+        user_order_notification.save()
 
         return redirect('order_success', order_id=order.id)
 
@@ -420,13 +456,16 @@ def all_addcart(request, id):
                 sub_total=single_product.product_price - discount_price
             )
 
-        # Update or create admin notification
-        admin_notification, created = Notification.objects.get_or_create(
+        # Update or create admin notification (for cart items)
+        user_cart_notification, created = Notification.objects.get_or_create(
             notification_type='user_cart',
+            user=request.user,  # Ensure the notification is tied to the current user
             defaults={'count': 0}
         )
-        admin_notification.count += 1
-        admin_notification.save()
+
+        # Increment the notification count for this user
+        user_cart_notification.count += 1
+        user_cart_notification.save()
 
         return JsonResponse({
             "status": "success",

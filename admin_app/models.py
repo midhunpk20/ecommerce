@@ -100,10 +100,12 @@ class Notification(models.Model):
         ('user_order', 'user_order'),
     ]
     
-    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES, unique=True)
+    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Allow null for admin notifications
     count = models.PositiveIntegerField(default=0)
-
+    
     def __str__(self):
-        return f"{self.notification_type} - {self.count}"
+        user_info = f" for {self.user.username}" if self.user else ""
+        return f"{self.notification_type} - {self.count}{user_info}"
     
     
